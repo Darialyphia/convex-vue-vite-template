@@ -1,0 +1,77 @@
+:where(:focus-visible) {
+  outline-width: 2px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+ul > li {
+  padding: 0;
+  max-inline-size: 100%;
+}
+
+p {
+  max-inline-size: 100%;
+}
+
+:is(a[href], a[href]:hover, a[href]:visited) {
+  color: inherit;
+  text-decoration: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-1);
+  -webkit-box-shadow: 0 0 0px 1000px var(--surface-1) inset;
+}
+
+svg *:focus {
+  outline: none;
+}
+
+fieldset {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--font-weight-7);
+}
+
+body {
+  background: var(--surface-2);
+  color: var(--text-1);
+  overscroll-behavior-y: contain;
+}
+
+:is(button, a):focus-visible {
+  outline: var(--link) solid 3px;
+  transition: outline-offset 145ms var(--ease-2);
+}
+
+:where(button) {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+@media (--mouse) {
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+html.dark {
+  color-scheme: dark;
+}

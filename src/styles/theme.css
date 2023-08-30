@@ -1,0 +1,87 @@
+:root {
+  /* Additional values not present in Open props */
+  --radius-pill: 9999px;
+  --size-05: 0.125rem;
+  --font-size-0: 0.9rem;
+  --font-size-00: 0.8rem;
+  --font-size-000: 0.7rem;
+  --font-size-9: 4rem;
+  --font-size-10: 5rem;
+  --font-size-11: 6rem;
+  --font-size-12: 7.5rem;
+  --size-content-4: 80ch;
+
+  --size-05-em: 0.125em;
+  --size-1-em: 0.25em;
+  --size-2-em: 0.5em;
+  --size-3-em: 1em;
+  --size-4-em: 1.25em;
+  --size-5-em: 1.5em;
+  --size-6-em: 1.75em;
+  --size-7-em: 2em;
+  --size-8-em: 3em;
+  --size-9-em: 4em;
+  --size-10-em: 5em;
+  --size-11-em: 7.5em;
+  --size-12-em: 10em;
+  --size-13-em: 15em;
+  --size-14-em: 20em;
+  --size-15-em: 30em;
+
+  /* Override breakpoint variables to use rem units */
+  --size-xxs: 15rem;
+  --size-xs: 23rem;
+  --size-sm: 30rem;
+  --size-md: 48rem;
+  --size-lg: 64rem;
+  --size-xl: 90rem;
+  --size-xxl: 120rem;
+
+  /* Colors */
+  --text-1: var(--gray-11);
+  --text-2: var(--gray-8);
+  --text-3: var(--gray-7);
+
+  --surface-1: white;
+  --surface-2: var(--gray-0);
+  --surface-3: var(--gray-1);
+  --surface-4: var(--gray-2);
+
+  --error: var(--red-8);
+  --error-hsl: var(--red-8-hsl);
+  --error-hover: var(--red-9);
+  --text-on-error: var(--gray-11);
+
+  --disabled: var(--gray-3);
+  --disabled-hsl: var(--gray-3-hsl);
+  --text-disabled: var(--gray-6);
+
+  --border-dimmed: hsl(var(--gray-11-hsl) / 0.15);
+  --border: hsl(var(--gray-11-hsl) / 0.4);
+}
+
+html.dark {
+  --text-1: var(--gray-3);
+  --text-2: var(--gray-5);
+  --text-3: var(--gray-6);
+
+  --link: var(--blue-4);
+
+  --surface-1: var(--gray-9);
+  --surface-2: var(--gray-10);
+  --surface-3: var(--gray-11);
+  --surface-4: var(--gray-12);
+
+  --error: var(--red-6);
+  --error-hsl: var(--red-6-hsl);
+  --error-hover: var(--red-7);
+
+  --disabled: var(--gray-8);
+  --disabled-hsl: var(--gray-8-hsl);
+  --text-disabled: var(--gray-6);
+
+  --border-dimmed: hsl(var(--gray-0-hsl) / 0.15);
+  --border: hsl(var(--gray-0-hsl) / 0.4);
+
+  --shadow-color: 210 7% 90%;
+}
