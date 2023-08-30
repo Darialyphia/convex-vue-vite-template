@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only",
+    "build": "npm-run-all type-check build-only",
+    "dev": "npm-run-all --parallel dev:server dev:client",
+    "dev:server": "convex dev",
+    "dev:client": "vite",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
@@ -14,6 +16,7 @@
   "dependencies": {
     "@vueuse/core": "^10.4.1",
     "autoprefixer": "^10.4.15",
+    "convex": "^1.1.1",
     "cssnano": "^6.0.1",
     "open-props": "^1.5.15",
     "unplugin-auto-import": "^0.16.6",
