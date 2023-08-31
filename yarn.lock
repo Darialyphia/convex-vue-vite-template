@@ -37,6 +37,19 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
+"@auth0/auth0-spa-js@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.1.2.tgz#2217db13ce0feb480a190ed165b36681bd48633c"
+  integrity sha512-xdA65Z/U7++Y7L9Uwh8Q8OVOs6qgFz+fb7GAzHFjpr1icO37B//xdzLXm7ZRgA19RWrsNe1nme3h896igJSvvw==
+
+"@auth0/auth0-vue@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-vue/-/auth0-vue-2.3.1.tgz#2b5959537c1285b8e7c13a5613a18bb4cd3fd29c"
+  integrity sha512-eTWwBToVRxM9r/zTuHFn+se2d0qYvgdzq62ZPUCzm2Q/Ms964EpW9ZTYbmsF7afKVVaLVACsysOwyh/N4usV6Q==
+  dependencies:
+    "@auth0/auth0-spa-js" "^2.1.2"
+    vue "^3.2.41"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.22.10", "@babel/code-frame@^7.22.5":
   version "7.22.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.22.13.tgz#e3c1c099402598483b7a8c46a721d1038803755e"
@@ -5674,7 +5687,7 @@ vue-tsc@^1.8.8:
     "@vue/typescript" "1.8.8"
     semver "^7.3.8"
 
-vue@^3.3.4:
+vue@^3.2.41, vue@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==

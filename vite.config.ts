@@ -23,7 +23,15 @@ export default defineConfig({
 
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
-      imports: ['vue', '@vueuse/core', 'vee-validate', VueRouterAutoImports],
+      imports: [
+        'vue',
+        '@vueuse/core',
+        'vee-validate',
+        VueRouterAutoImports,
+        {
+          '@auth0/auth0-vue': ['useAuth0']
+        }
+      ],
       dirs: ['./src/composables/**', './src/utils/**']
     }),
 
