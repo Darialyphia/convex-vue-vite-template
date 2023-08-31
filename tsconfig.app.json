@@ -4,6 +4,7 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
+    "tools/**/*.ts",
     "auto-imports.d.ts",
     "components.d.ts",
     "typed-router.d.ts"
@@ -13,7 +14,8 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "api": ["./convex/_generated/api"]
     }
   }
 }
