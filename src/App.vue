@@ -7,15 +7,20 @@ const location = window.location;
 </script>
 <template>
   <header class="container">
-    <UiButton v-if="!isAuthenticated" @click="loginWithRedirect()">Log in</UiButton>
+    <h1>Super Duper Todo-list</h1>
+    <UiButton v-if="!isAuthenticated" class="ml-auto" @click="loginWithRedirect()">
+      Log in
+    </UiButton>
     <template v-else>
-      Welcome back, {{ user?.nickname }}
+      <span class="ml-auto">
+        {{ user?.nickname }}
+      </span>
       <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
         Log out
       </UiButton>
     </template>
 
-    <DarkModeToggle class="ml-auto" />
+    <DarkModeToggle />
   </header>
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
@@ -38,5 +43,9 @@ header {
 
   margin-bottom: var(--size-5);
   padding-block: var(--size-3);
+}
+
+h1 {
+  font-size: var(--font-size-4);
 }
 </style>

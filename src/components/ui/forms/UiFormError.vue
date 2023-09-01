@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import type { Nullable } from '@/utils/types';
 
-defineOptions({
-  name: 'UiFormError'
-});
-
-const { error } = defineProps<{ error?: Nullable<boolean | string> }>();
+const { error, isAlwaysVisible = true } = defineProps<{
+  error?: Nullable<boolean | string>;
+  isAlwaysVisible?: boolean;
+}>();
 </script>
 
 <template>
   <div class="ui-form-error">
     <transition appear>
-      <div v-if="error" class="inner">
+      <div v-if="error" class="flex gap-1 items-start">
         <UiIcon icon="mdi-alert" />
-        <span>{{ error }}</span>
+        {{ error }}
       </div>
     </transition>
   </div>
@@ -22,15 +21,10 @@ const { error } = defineProps<{ error?: Nullable<boolean | string> }>();
 <style scoped lang="postcss">
 .ui-form-error {
   gap: var(--size-2);
-  min-height: var(--size-5);
+  min-height: v-bind('isAlwaysVisible ? "var(--size-5" : 0');
   color: var(--error);
-
-  & svg {
-    float: left;
-    margin-inline-end: var(--size-2);
-    padding-top: var(--size-1);
-  }
 }
+
 .v-enter-active,
 .v-leave-active {
   transition: all 0.3s;

@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
     DarkModeToggle: typeof import('./src/components/DarkModeToggle.vue')['default']
     Hello: typeof import('./src/components/Hello.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
