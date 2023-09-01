@@ -15,7 +15,7 @@ const location = window.location;
       <span class="ml-auto">
         <RouterLink
           v-slot="{ navigate, href }"
-          :to="{ name: 'Profile', params: { id: user!.nickname! } }"
+          :to="{ name: 'Profile', params: { id: user!.sub! } }"
           custom
         >
           <UiLinkButton :href="href" @click="navigate">

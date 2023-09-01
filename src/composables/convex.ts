@@ -76,7 +76,16 @@ export function useMutation<Mutation extends MutationReference>(mutation: Mutati
   };
 }
 
-export type ConvexAuthState = {
-  isLoading: Readonly<Ref<boolean>>;
-  isAuthenticated: Readonly<Ref<boolean>>;
-};
+type ActionReference = FunctionReference<'action'>;
+export function useAction<Action extends ActionReference>(action: Action) {
+  const convex = useConvex();
+
+  const actionReference =
+    typeof action === 'string'
+      ? makeFunctionReference<'action', any, any>(action)
+      : action;
+
+  return (args?: Action['_args']): Promise<Action['_returnType']> => {
+    return convex.action(actionReference, args);
+  };
+}
