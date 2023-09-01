@@ -1,13 +1,5 @@
 <script setup lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue';
-import { definePage } from 'vue-router/auto';
-
-definePage({
-  name: 'Profile',
-  meta: {
-    needsAuth: true
-  }
-});
 
 const { user } = useAuth0();
 </script>
@@ -18,3 +10,12 @@ const { user } = useAuth0();
     <pre>{{ user }}</pre>
   </main>
 </template>
+
+<route lang="json">
+{
+  "name": "Profile",
+  "meta": {
+    "needsAuth": true
+  }
+}
+</route>

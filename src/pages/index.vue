@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import { definePage } from 'vue-router/auto';
 import TodoList from '@/components/TodoList.vue';
 import AddTodoForm from '@/components/AddTodoForm.vue';
-
-definePage({
-  name: 'Home'
-});
 </script>
 
 <template>
@@ -22,3 +17,12 @@ definePage({
     </section>
   </main>
 </template>
+
+<route lang="json">
+{
+  "name": "Home",
+  "meta": {
+    "needsAuth": false
+  }
+}
+</route>

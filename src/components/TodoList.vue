@@ -10,7 +10,7 @@ const setCompleted = useMutation(api.todos.setCompleted);
 <template>
   <p v-if="!todos.length">No todos yet !</p>
 
-  <ul v-auto-animate>
+  <ul>
     <li v-for="todo in todos" :key="todo._id">
       <input
         v-model="todo.completed"
@@ -22,15 +22,3 @@ const setCompleted = useMutation(api.todos.setCompleted);
     </li>
   </ul>
 </template>
-
-<style scoped lang="postcss">
-li {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-
-  &:has(input:checked) {
-    text-decoration: line-through;
-  }
-}
-</style>
