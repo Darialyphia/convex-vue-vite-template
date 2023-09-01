@@ -42,14 +42,14 @@ const tag = computed(() => {
   >
     <UiIcon
       v-if="props.leftIcon && !props.isLoading"
-      :name="props.leftIcon"
+      :icon="props.leftIcon"
       aria-hidden="true"
     />
 
     <slot />
     <UiIcon
       v-if="props.rightIcon && !props.isLoading"
-      :name="props.rightIcon"
+      :icon="props.rightIcon"
       aria-hidden="true"
     />
   </component>
@@ -61,7 +61,7 @@ const tag = computed(() => {
   --button-size: var(--font-size-2);
   --button-weight: var(--font-weight-6);
   --button-bg: transparent;
-  --button-color: var(--text1);
+  --button-color: var(--text-1);
   --button-border-color: var(--button-bg);
 
   display: flex;

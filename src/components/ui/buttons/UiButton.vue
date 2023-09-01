@@ -12,22 +12,15 @@ const props = defineProps<ButtonProps>();
 
 <style scoped lang="postcss">
 .ui-button {
-  --button-color: var(--gray-0);
-  --button-bg: var(--gray-9);
-
-  html.dark & {
-    --button-color: var(--gray-0);
-    --button-bg: var(--blue-9);
-  }
+  --button-color: var(--text-on-primary);
+  --button-bg: var(--primary);
+  --button-hover-color: var(--text-on-primary);
+  --button-hover-bg: var(--primary-hover);
 
   @media (hover: hover) and (pointer: fine) {
     &:hover:not(:disabled) {
-      --button-bg: var(--gray-12);
-      --button-color: var(--gray-0);
-      html.dark & {
-        --button-bg: var(--blue-8);
-        --button-color: var(--gray-0);
-      }
+      --button-bg: var(--button-hover-bg);
+      --button-color: var(--button-hover-color);
     }
   }
 }

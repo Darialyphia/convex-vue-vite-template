@@ -1,4 +1,86 @@
+/* 
+ theme colors
+ These colors gets picked up by the uno config at compile time to generate dynamic colors 
+ They MUST start woth --color- AND end with -hsl. They also need to be hsl values NON COMMA SEPARATED
+ You don't need to use these directly in your css files (see below)
+*/
 :root {
+  --color-text-1-hsl: var(--gray-11-hsl);
+  --color-text-2-hsl: var(--gray-8-hsl);
+  --color-text-3-hsl: var(--gray-7-hsl);
+
+  --color-surface-1-hsl: 0 0% 100%;
+  --color-surface-2-hsl: var(--gray-0-hsl);
+  --color-surface-3-hsl: var(--gray-1-hsl);
+  --color-surface-4-hsl: var(--gray-2-hsl);
+
+  --color-primary-hsl: var(--gray-11-hsl);
+  --color-primary-hover-hsl: var(--gray-8-hsl);
+  --color-text-on-primary-hsl: var(--gray-0-hsl);
+
+  --color-error-hsl: var(--red-8-hsl);
+  --color-error-hover-hsl: var(--red-9-hsl);
+  --color-text-on-error-hsl: var(--gray-11-hsl);
+
+  --color-disabled-hsl: var(--gray-3-hsl);
+  --color-text-on-disabled-hsl: var(--gray-6-hsl);
+
+  --color-link-hsl: var(--blue-7-hsl);
+}
+
+/* Theme color Dark mode overrideq */
+html.dark {
+  --color-text-1-hsl: var(--gray-3-hsl);
+  --color-text-2-hsl: var(--gray-5-hsl);
+  --color-text-3-hsl: var(--gray-6-hsl);
+
+  --color-surface-1-hsl: var(--gray-9-hsl);
+  --color-surface-2-hsl: var(--gray-10-hsl);
+  --color-surface-3-hsl: var(--gray-11-hsl);
+  --color-surface-4-hsl: var(--gray-12-hsl);
+
+  --color-primary-hsl: var(--blue-9-hsl);
+  --color-primary-hover-hsl: var(--blue-8-hsl);
+
+  --color-error-hsl: var(--red-6-hsl);
+  --color-error-hover-hsl: var(--red-7-hsl);
+
+  --color-disabled-hsl: var(--gray-8-hsl);
+  --color-text-on-disabled-hsl: var(--gray-6-hsl);
+
+  --color-link-hsl: var(--blue-4-hsl);
+}
+
+:root {
+  /* 
+    Color aliases
+    These are the colors you should actually be using in your css files
+  */
+  --text-1: hsl(var(--color-text-1-hsl));
+  --text-2: hsl(var(--color-text-2-hsl));
+  --text-3: hsl(var(--color-text-3-hsl));
+
+  --surface-1: hsl(var(--color-surface-1-hsl));
+  --surface-2: hsl(var(--color-surface-2-hsl));
+  --surface-3: hsl(var(--color-surface-3-hsl));
+  --surface-4: hsl(var(--color-surface-3-hsl));
+
+  --primary: hsl(var(--color-primary-hsl));
+  --primary-hover: hsl(var(--color-primary-hover-hsl));
+  --text-on-primary: hsl(var(--color-text-on-primary-hsl));
+
+  --error: hsl(var(--color-error-hsl));
+  --error-hover: hsl(var(--color-error-hover-hsl));
+  --text-on-error: hsl(var(--color-text-on-error-hsl));
+
+  --disabled: hsl(var(--color-disabled-hsl));
+  --text-on-disabled: hsl(var(--color-text-on-hsl));
+
+  --border-dimmed: hsl(var(--gray-11-hsl) / 0.15);
+  --border: hsl(var(--gray-11-hsl) / 0.4);
+
+  --link: hsl(var(--color-link-hsl));
+
   /* Additional values not present in Open props */
   --outline-offset: 3px;
   --radius-pill: 9999px;
@@ -37,86 +119,11 @@
   --size-lg: 64rem;
   --size-xl: 90rem;
   --size-xxl: 120rem;
-
-  /* 
-    theme colors
-    These colors gets picked up by the uno config at compile time to generate dynamic colors 
-    They MUST start woth --color- AND end with -hsl. They also need to be hsl values NON COMMA SEPARATED
-    You don't need to use these directly in your css files (see below)
-  */
-  --color-text-1-hsl: var(--gray-11-hsl);
-  --color-text-2-hsl: var(--gray-8-hsl);
-  --color-text-3-hsl: var(--gray-7-hsl);
-
-  --color-surface-1-hsl: 0 0% 100%;
-  --color-surface-2-hsl: var(--gray-0-hsl);
-  --color-surface-3-hsl: var(--gray-1-hsl);
-  --color-surface-4-hsl: var(--gray-2-hsl);
-
-  --color-primary-hsl: var(--blue-8-hsl);
-  --color-primary-hover-hsl: var(--blue-9-hsl);
-  --color-text-on-primary-hsl: var(--gray-11-hsl);
-
-  --color-error-hsl: var(--red-8-hsl);
-  --color-error-hover-hsl: var(--red-9-hsl);
-  --color-text-on-error-hsl: var(--gray-11-hsl);
-
-  --color-disabled-hsl: var(--gray-3-hsl);
-  --color-text-on-disabled-hsl: var(--gray-6-hsl);
-
-  --color-link-hsl: var(--blue-7-hsl);
-
-  /* 
-    Color aliases
-    These are the colors you should actually be using in your css files
-  */
-  --text-1: hsl(var(--color-text-1-hsl));
-  --text-2: hsl(var(--color-text-2-hsl));
-  --text-3: hsl(var(--color-text-3-hsl));
-
-  --surface-1: hsl(var(--color-surface-1-hsl));
-  --surface-2: hsl(var(--color-surface-2-hsl));
-  --surface-3: hsl(var(--color-surface-3-hsl));
-  --surface-4: hsl(var(--color-surface-3-hsl));
-
-  --primary: hsl(var(--color-primary-hsl));
-  --primary-hover: hsl(var(--color-primary-hover-hsl));
-  --text-on-primary: hsl(var(--color-text-on-primary-hsl));
-
-  --error: hsl(var(--color-error-hsl));
-  --error-hover: hsl(var(--color-error-hover-hsl));
-  --text-on-error: hsl(var(--color-text-on-error-hsl));
-
-  --disabled: hsl(var(--color-disabled-hsl));
-  --text-on-disabled: hsl(var(--color-text-on-hsl));
-
-  --border-dimmed: hsl(var(--gray-11-hsl) / 0.15);
-  --border: hsl(var(--gray-11-hsl) / 0.4);
-
-  --link: hsl(var(--color-link-hsl));
-  /* used internally by open-props normalizer */
 }
 
 html.dark {
-  --color-text-1-hsl: var(--gray-3-hsl);
-  --color-text-2-hsl: var(--gray-5-hsl);
-  --color-text-3-hsl: var(--gray-6-hsl);
-
-  --color-surface-1-hsl: var(--gray-9-hsl);
-  --color-surface-2-hsl: var(--gray-10-hsl);
-  --color-surface-3-hsl: var(--gray-11-hsl);
-  --color-surface-4-hsl: var(--gray-12-hsl);
-
-  --color-error-hsl: var(--red-6-hsl);
-  --color-error-hover-hsl: var(--red-7-hsl);
-
-  --color-disabled-hsl: var(--gray-8-hsl);
-  --color-text-on-disabled-hsl: var(--gray-6-hsl);
-
   --border-dimmed: hsl(var(--gray-0-hsl) / 0.15);
   --border: hsl(var(--gray-0-hsl) / 0.4);
-
-  --color-link-hsl: var(--blue-4-hsl);
 
   /* used internally by open-props box-shadows */
   --shadow-color: 210 7% 90%;

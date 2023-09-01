@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { loginWithRedirect, user, isAuthenticated, logout } = useAuth0();
+const { loginWithRedirect, user, logout } = useAuth0();
+
+const { isAuthenticated } = useConvexAuth0Provider();
 
 const location = window.location;
 </script>

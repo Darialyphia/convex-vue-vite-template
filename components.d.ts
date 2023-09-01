@@ -11,6 +11,7 @@ declare module 'vue' {
     Hello: typeof import('./src/components/Hello.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TodoList: typeof import('./src/components/TodoList.vue')['default']
     UiButton: typeof import('./src/components/ui/buttons/UiButton.vue')['default']
     UiButtonBase: typeof import('./src/components/ui/buttons/UiButtonBase.vue')['default']
     UiCheckbox: typeof import('./src/components/ui/inputs/UiCheckbox.vue')['default']

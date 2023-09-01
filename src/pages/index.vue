@@ -3,10 +3,7 @@ import { api } from '@/api';
 import { toTypedSchema } from '@vee-validate/zod';
 import { object, string } from 'zod';
 
-const todos = await useSuspenseQuery(api.todos.list);
 const addTodo = useMutation(api.todos.add);
-const removeTodo = useMutation(api.todos.remove);
-const setCompleted = useMutation(api.todos.setCompleted);
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: toTypedSchema(
@@ -26,24 +23,10 @@ const onSubmit = handleSubmit(async values => {
   <main class="container surface">
     <h1>Convex Vue todo list</h1>
 
-    <p v-if="!todos.length">No todos yet !</p>
-
-    <ul v-auto-animate>
-      <li v-for="todo in todos" :key="todo._id">
-        <input
-          v-model="todo.completed"
-          type="checkbox"
-          @change="setCompleted({ id: todo._id, completed: todo.completed })"
-        />
-        {{ todo.text }}
-        <UiIconButton
-          icon="mdi:close"
-          title="remove todo"
-          style="--button-color: var(--error)"
-          @click="removeTodo({ id: todo._id })"
-        />
-      </li>
-    </ul>
+    <Suspense>
+      <TodoList />
+      <template #fallback>Loading todos...</template>
+    </Suspense>
 
     <form class="space-y-2" @submit.prevent="onSubmit">
       <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm">
@@ -56,15 +39,3 @@ const onSubmit = handleSubmit(async values => {
     </form>
   </main>
 </template>
-
-<style scoped lang="postcss">
-li {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-
-  &:has(input:checked) {
-    text-decoration: line-through;
-  }
-}
-</style>
