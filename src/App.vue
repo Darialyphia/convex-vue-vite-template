@@ -1,19 +1,27 @@
 <script setup lang="ts">
 const { loginWithRedirect, user, logout } = useAuth0();
 
-const { isAuthenticated } = useConvexAuth0Provider();
+const { isAuthenticated } = useConvexAuth();
 
 const location = window.location;
 </script>
 <template>
   <header class="container">
-    <h1>Super Duper Todo-list</h1>
+    <h1><RouterLink :to="{ name: 'Home' }">Super Duper Todo-list</RouterLink></h1>
     <UiButton v-if="!isAuthenticated" class="ml-auto" @click="loginWithRedirect()">
       Log in
     </UiButton>
     <template v-else>
       <span class="ml-auto">
-        {{ user?.nickname }}
+        <RouterLink
+          v-slot="{ navigate, href }"
+          :to="{ name: 'Profile', params: { id: user!.nickname! } }"
+          custom
+        >
+          <UiLinkButton :href="href" @click="navigate">
+            {{ user?.nickname }}
+          </UiLinkButton>
+        </RouterLink>
       </span>
       <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
         Log out

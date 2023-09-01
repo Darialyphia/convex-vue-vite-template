@@ -154,7 +154,7 @@ declare global {
   const useColorMode: typeof import('@vueuse/core')['useColorMode']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
   const useConvex: typeof import('./src/composables/convex')['useConvex']
-  const useConvexAuth: typeof import('./src/composables/convex-auth')['useConvexAuth']
+  const useConvexAuth: typeof import('./src/composables/convex')['useConvexAuth']
   const useConvexAuth0Provider: typeof import('./src/composables/convex-auth')['useConvexAuth0Provider']
   const useConvexAuthProvider: typeof import('./src/utils/convex')['useConvexAuthProvider']
   const useConvexQuery: typeof import('./src/utils/convex')['useConvexQuery']

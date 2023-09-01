@@ -3,19 +3,15 @@ import {
   type OptionalRestArgs,
   makeFunctionReference
 } from 'convex/server';
-import type { InjectionKey, Plugin, Ref } from 'vue';
-
-import { ConvexVueClient } from '@/utils/convex';
-
-const CONVEX_INJECTION_KEY = Symbol('convex') as InjectionKey<ConvexVueClient>;
-export const createConvex = (origin: string): Plugin => ({
-  install(app) {
-    app.provide(CONVEX_INJECTION_KEY, new ConvexVueClient(origin));
-  }
-});
+import type { Ref } from 'vue';
+import { CONVEX_INJECTION_KEY, CONVEX_AUTH_INJECTION_KEY } from '@/plugins/convex';
 
 export const useConvex = () => {
   return useSafeInject(CONVEX_INJECTION_KEY);
+};
+
+export const useConvexAuth = () => {
+  return useSafeInject(CONVEX_AUTH_INJECTION_KEY);
 };
 
 type QueryReference = FunctionReference<'query'>;
