@@ -41,6 +41,8 @@ const location = window.location;
       </Suspense>
     </template>
   </RouterView>
+
+  <ServiceWorkerPrompt />
 </template>
 
 <style scoped>

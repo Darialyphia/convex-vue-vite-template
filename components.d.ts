@@ -9,9 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
     DarkModeToggle: typeof import('./src/components/DarkModeToggle.vue')['default']
-    Hello: typeof import('./src/components/Hello.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ServiceWorkerPrompt: typeof import('./src/components/ServiceWorkerPrompt.vue')['default']
     TodoList: typeof import('./src/components/TodoList.vue')['default']
     UiButton: typeof import('./src/components/ui/buttons/UiButton.vue')['default']
     UiButtonBase: typeof import('./src/components/ui/buttons/UiButtonBase.vue')['default']
@@ -23,7 +23,6 @@ declare module 'vue' {
     UiIcon: typeof import('./src/components/ui/UiIcon.vue')['default']
     UiIconButton: typeof import('./src/components/ui/buttons/UiIconButton.vue')['default']
     UiLinkButton: typeof import('./src/components/ui/buttons/UiLinkButton.vue')['default']
-    UiPasswordInput: typeof import('./src/components/ui/inputs/UiPasswordInput.vue')['default']
     UiSwitch: typeof import('./src/components/ui/inputs/UiSwitch.vue')['default']
     UiTextInput: typeof import('./src/components/ui/inputs/UiTextInput.vue')['default']
   }
