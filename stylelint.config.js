@@ -32,6 +32,12 @@ module.exports = {
           'variants'
         ]
       }
+    ],
+    'function-no-unknown': [
+      true,
+      {
+        ignoreFunctions: ['theme']
+      }
     ]
   }
 };

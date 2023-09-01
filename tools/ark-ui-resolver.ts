@@ -1,4 +1,4 @@
-import { Resolver } from 'unplugin-auto-import/types';
+import { type Resolver } from 'unplugin-auto-import/types';
 
 export interface ModuleOptions {
   prefix: string;

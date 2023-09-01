@@ -47,6 +47,8 @@
   --surface-3: var(--gray-1);
   --surface-4: var(--gray-2);
 
+  --primary: var(--blue-8);
+
   --error: var(--red-8);
   --error-hsl: var(--red-8-hsl);
   --error-hover: var(--red-9);

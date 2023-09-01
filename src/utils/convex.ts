@@ -96,7 +96,7 @@ export class ConvexVueClient {
     this.adminAuth = token;
     this.fakeUserIdentity = identity;
     if (this.closed) {
-      throw new Error('ConvexReactClient has already been closed.');
+      throw new Error('ConvexVueClient has already been closed.');
     }
     if (this.cachedSync) {
       // @ts-ignore internal deez nuts
@@ -281,23 +281,19 @@ export const useSuspenseQuery = <Query extends QueryReference>(
   const queryReference =
     typeof query === 'string' ? makeFunctionReference<'query', any, any>(query) : query;
 
-  let _resolve: (val: Ref<Query['_returnType']>) => void;
-  const suspense = new Promise<Ref<Query['_returnType']>>(res => {
-    _resolve = res;
+  return new Promise<Ref<Query['_returnType']>>(res => {
+    const { onUpdate, localQueryResult } = convex.watchQuery(queryReference, ...args);
+    const data = ref(localQueryResult());
+
+    const unsub = onUpdate(() => {
+      const newVal = localQueryResult();
+      data.value = newVal;
+      res(data);
+    });
+    if (data.value) res(data);
+
+    onUnmounted(unsub);
   });
-
-  const { onUpdate, localQueryResult } = convex.watchQuery(queryReference, ...args);
-  const data = ref(localQueryResult());
-
-  const unsub = onUpdate(() => {
-    const newVal = localQueryResult();
-    data.value = newVal;
-    _resolve(data);
-  });
-
-  onUnmounted(unsub);
-
-  return suspense;
 };
 
 type MutationReference = FunctionReference<'mutation'>;

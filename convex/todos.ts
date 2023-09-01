@@ -3,7 +3,7 @@ import { v } from 'convex/values';
 
 export const list = query({
   args: {},
-  handler: ctx => {
+  handler: async ctx => {
     return ctx.db.query('todos').order('desc').take(100);
   }
 });
@@ -25,7 +25,6 @@ export const add = mutation({
 export const setCompleted = mutation({
   args: { completed: v.boolean(), id: v.id('todos') },
   handler: async (ctx, { id, completed }) => {
-    console.log(completed);
     await ctx.db.patch(id, { completed });
   }
 });
