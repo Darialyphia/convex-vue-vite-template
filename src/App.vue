@@ -5,7 +5,9 @@ const location = window.location;
 </script>
 <template>
   <header class="container flex gap-3">
-    <button v-if="!isAuthenticated" @click="loginWithRedirect()">Log in</button>
+    <button v-if="!isAuthenticated" class="bg-foo-3" @click="loginWithRedirect()">
+      Log in
+    </button>
     <template v-else>
       Welcome back, {{ user?.nickname }}
       <button @click="logout({ logoutParams: { returnTo: location.origin } })">

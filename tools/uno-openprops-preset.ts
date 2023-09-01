@@ -19,6 +19,27 @@ const alphaPlaceholdersRE = new RegExp(
 const numberWithUnitRE =
   /^(-?\d*(?:\.\d+)?)(px|pt|pc|%|r?(?:em|ex|lh|cap|ch|ic)|(?:[sld]?v|cq)(?:[whib]|min|max)|in|cm|mm|rpx)?$/i;
 const globalKeywords = ['inherit', 'initial', 'revert', 'revert-layer', 'unset'];
+const directionMap: Record<string, string[]> = {
+  l: ['-left'],
+  r: ['-right'],
+  t: ['-top'],
+  b: ['-bottom'],
+  s: ['-inline-start'],
+  e: ['-inline-end'],
+  x: ['-left', '-right'],
+  y: ['-top', '-bottom'],
+  '': [''],
+  bs: ['-block-start'],
+  be: ['-block-end'],
+  is: ['-inline-start'],
+  ie: ['-inline-end'],
+  block: ['-block-start', '-block-end'],
+  inline: ['-inline-start', '-inline-end']
+};
+
+export function hasParseableColor(color: string | undefined, theme: object) {
+  return color != null && !!parseColor(color, theme)?.color;
+}
 
 export function colorOpacityToString(color: CSSColorValue) {
   const alpha = color.alpha ?? 1;
@@ -49,7 +70,6 @@ export function colorResolver(
 ): DynamicMatcher {
   return ([, body]: string[], { theme }: RuleContext): CSSObject | undefined => {
     const data = parseColor(body, theme);
-
     if (!data) return;
 
     const { alpha, color, cssColor } = data;
@@ -70,6 +90,56 @@ export function colorResolver(
   };
 }
 
+function borderColorResolver(direction: string) {
+  return ([, body]: string[], theme: object): CSSObject | undefined => {
+    const data = parseColor(body, theme);
+
+    if (!data) return;
+
+    const { alpha, color, cssColor } = data;
+
+    if (cssColor) {
+      if (alpha != null) {
+        return {
+          [`border${direction}-color`]: colorToString(cssColor, alpha)
+        };
+      }
+      if (direction === '') {
+        return {
+          '--un-border-opacity': colorOpacityToString(cssColor),
+          'border-color': colorToString(cssColor, 'var(--un-border-opacity)')
+        };
+      } else {
+        return {
+          // Separate this return since if `direction` is an empty string, the first key will be overwritten by the second.
+          '--un-border-opacity': colorOpacityToString(cssColor),
+          [`--un-border${direction}-opacity`]: 'var(--un-border-opacity)',
+          [`border${direction}-color`]: colorToString(
+            cssColor,
+            `var(--un-border${direction}-opacity)`
+          )
+        };
+      }
+    } else if (color) {
+      return {
+        [`border${direction}-color`]: colorToString(color, alpha)
+      };
+    }
+  };
+}
+
+function handlerBorderColor(
+  [, a = '', c]: string[],
+  { theme }: RuleContext
+): CSSObject | undefined {
+  if (a in directionMap && hasParseableColor(c, theme)) {
+    return Object.assign(
+      {},
+      ...directionMap[a].map(i => borderColorResolver(i)(['', c], theme))
+    );
+  }
+}
+
 const makeSwatch = (hue: string) => {
   const swatch: Record<string, string> = {};
   for (let i = 0; i < 13; i++) {
@@ -82,7 +152,6 @@ const makeSwatch = (hue: string) => {
 //prettier-ignore
 const hues = ['gray','stone','red','pink','purple','violet','indigo','blue','cyan','teal','green','lime','yellow','orange','choco','brown','sand','jungle'];
 const sizes = ['000', '00', '05', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
 const fontSizes = Object.fromEntries(
   ['000', '00', '0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(s => [
     s,
@@ -106,17 +175,38 @@ export const presetOpenProps = () =>
     theme: {
       colors,
       boxShadow: {
-        1: openProps.shadow1,
-        2: openProps.shadow2,
-        3: openProps.shadow3,
-        4: openProps.shadow4,
-        5: openProps.shadow5,
-        6: openProps.shadow6,
-        'inner-0': openProps.innerShadow0,
-        'inner-1': openProps.innerShadow1,
-        'inner-2': openProps.innerShadow2,
-        'inner-3': openProps.innerShadow3,
-        'inner-4': openProps.innerShadow4
+        1: 'var(--shadow-1)',
+        2: 'var(--shadow-2)',
+        3: 'var(--shadow-3)',
+        4: 'var(--shadow-4)',
+        5: 'var(--shadow-5)',
+        6: 'var(--shadow-6)',
+        'inner-0': 'var(--inner-shadow-1)',
+        'inner-1': 'var(--inner-shadow-1)',
+        'inner-2': 'var(--inner-shadow-1)',
+        'inner-3': 'var(--inner-shadow-1)',
+        'inner-4': 'var(--inner-shadow-1)'
+      },
+      borderRadius: {
+        1: 'var(--radius-1)',
+        2: 'var(--radius-2)',
+        3: 'var(--radius-3)',
+        4: 'var(--radius-4)',
+        5: 'var(--radius-5)',
+        6: 'var(--radius-6)',
+        'blob-1': 'var(--radius-blob-1)',
+        'blob-2': 'var(--radius-blob-2)',
+        'blob-3': 'var(--radius-blob-3)',
+        'blob-4': 'var(--radius-blob-4)',
+        'blob-5': 'var(--radius-blob-5)',
+        'conditional-1': 'var(--radius-conditional-1)',
+        'conditional-2': 'var(--radius-conditional-2)',
+        'conditional-3': 'var(--radius-conditional-3)',
+        'conditional-4': 'var(--radius-conditional-4)',
+        'conditional-5': 'var(--radius-conditional-5)',
+        'conditional-6': 'var(--radius-conditional-6)',
+        round: 'var(--radius-round)',
+        pill: 'var(--radius-pill)'
       },
       spacing: {
         ...spacing,
@@ -162,7 +252,9 @@ export const presetOpenProps = () =>
     },
 
     rules: [
+      // open-props gradients
       [/^gradient-(\d+)$/, ([, d]) => ({ 'background-image': `var(--gradient-${d})` })],
+      // open-props aspect ratio
       [
         /^aspect-(\d+)$/,
         ([, d]) => {
@@ -174,7 +266,7 @@ export const presetOpenProps = () =>
           };
         }
       ],
-
+      // open-props colors
       [
         /^(?:color|c)-(.+)$/,
         colorResolver('color', 'text'),
@@ -200,6 +292,16 @@ export const presetOpenProps = () =>
         /^bg-(.+)$/,
         colorResolver('background-color', 'bg'),
         { autocomplete: 'bg-$colors' }
-      ]
+      ],
+      // border-color
+      [
+        /^(?:border|b)-()(?:color-)?(.+)$/,
+        handlerBorderColor,
+        { autocomplete: ['(border|b)-$colors', '(border|b)-<directions>-$colors'] }
+      ],
+      [/^(?:border|b)-([xy])-(?:color-)?(.+)$/, handlerBorderColor],
+      [/^(?:border|b)-([rltbse])-(?:color-)?(.+)$/, handlerBorderColor],
+      [/^(?:border|b)-(block|inline)-(?:color-)?(.+)$/, handlerBorderColor],
+      [/^(?:border|b)-([bi][se])-(?:color-)?(.+)$/, handlerBorderColor]
     ]
   });
