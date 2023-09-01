@@ -1,9 +1,7 @@
-import '@/styles/global.css';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router/auto';
 import { createAuth0 } from '@auth0/auth0-vue';
 import { createConvex } from './plugins/convex';
-import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 
 declare module 'vue-router/auto' {
   interface RouteMeta {
@@ -34,6 +32,7 @@ app.use(
     }
   })
 );
+// Add this plugin AFTER  vue-router and vue-auth0 if you plan to install the navigationGuards
 app.use(
   createConvex(import.meta.env.VITE_CONVEX_URL, {
     auth0: {
@@ -43,5 +42,4 @@ app.use(
     }
   })
 );
-app.use(autoAnimatePlugin);
 app.mount('#app');

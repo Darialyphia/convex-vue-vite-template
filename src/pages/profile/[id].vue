@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useAuth0 } from '@auth0/auth0-vue';
+import { definePage } from 'vue-router/auto';
+
 definePage({
   name: 'Profile',
   meta: {

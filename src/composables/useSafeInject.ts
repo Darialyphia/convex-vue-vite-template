@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue';
+import { inject, type InjectionKey } from 'vue';
 
 export const useSafeInject = <T>(injectionKey: InjectionKey<T>): T => {
   const context = inject<T>(injectionKey);

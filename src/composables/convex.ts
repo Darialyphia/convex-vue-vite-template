@@ -3,8 +3,9 @@ import {
   type OptionalRestArgs,
   makeFunctionReference
 } from 'convex/server';
-import type { Ref } from 'vue';
+import { onUnmounted, ref, type Ref } from 'vue';
 import { CONVEX_INJECTION_KEY, CONVEX_AUTH_INJECTION_KEY } from '@/plugins/convex';
+import { useSafeInject } from './useSafeInject';
 
 export const useConvex = () => {
   return useSafeInject(CONVEX_INJECTION_KEY);

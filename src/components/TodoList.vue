@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { api } from '@/api';
+import { useSuspenseQuery, useMutation } from '@/composables/convex';
 
 const todos = await useSuspenseQuery(api.todos.list);
 const removeTodo = useMutation(api.todos.remove);
@@ -17,12 +18,7 @@ const setCompleted = useMutation(api.todos.setCompleted);
         @change="setCompleted({ id: todo._id, completed: todo.completed })"
       />
       {{ todo.text }}
-      <UiIconButton
-        icon="mdi:close"
-        title="remove todo"
-        style="--button-color: var(--error)"
-        @click="removeTodo({ id: todo._id })"
-      />
+      <button title="remove todo" @click="removeTodo({ id: todo._id })">X</button>
     </li>
   </ul>
 </template>

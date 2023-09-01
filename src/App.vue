@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useAuth0 } from '@auth0/auth0-vue';
+import { useConvexAuth } from '@/composables/convex';
+
 const { loginWithRedirect, user, logout } = useAuth0();
 
 const { isAuthenticated } = useConvexAuth();
@@ -8,28 +11,21 @@ const location = window.location;
 <template>
   <header class="container">
     <h1><RouterLink :to="{ name: 'Home' }">Super Duper Todo-list</RouterLink></h1>
-    <UiButton v-if="!isAuthenticated" class="ml-auto" @click="loginWithRedirect()">
+    <button v-if="!isAuthenticated" class="ml-auto" @click="loginWithRedirect()">
       Log in
-    </UiButton>
+    </button>
     <template v-else>
       <span class="ml-auto">
-        <RouterLink
-          v-slot="{ navigate, href }"
-          :to="{ name: 'Profile', params: { id: user!.sub! } }"
-          custom
-        >
-          <UiLinkButton :href="href" @click="navigate">
-            {{ user?.nickname }}
-          </UiLinkButton>
+        <RouterLink :to="{ name: 'Profile', params: { id: user!.sub! } }">
+          {{ user?.nickname }}
         </RouterLink>
       </span>
-      <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
+      <button @click="logout({ logoutParams: { returnTo: location.origin } })">
         Log out
-      </UiButton>
+      </button>
     </template>
-
-    <DarkModeToggle />
   </header>
+
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
       <Suspense>
@@ -46,14 +42,6 @@ const location = window.location;
 <style scoped>
 header {
   display: flex;
-  gap: var(--size-3);
   align-items: center;
-
-  margin-bottom: var(--size-5);
-  padding-block: var(--size-3);
-}
-
-h1 {
-  font-size: var(--font-size-4);
 }
 </style>
