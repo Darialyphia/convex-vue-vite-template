@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
+    "tools/**/*.ts",
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",

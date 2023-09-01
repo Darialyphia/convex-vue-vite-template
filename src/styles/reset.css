@@ -66,6 +66,10 @@ body {
   border: none;
 }
 
+:where(:not(:active):focus-visible) {
+  outline-offset: var(--outline-offset);
+}
+
 @media (--mouse) {
   a:hover {
     text-decoration: underline;

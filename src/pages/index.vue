@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { api } from '@/api';
+import { toTypedSchema } from '@vee-validate/zod';
+import { object, string } from 'zod';
 
 const todos = await useSuspenseQuery(api.todos.list);
 const addTodo = useMutation(api.todos.add);
 const removeTodo = useMutation(api.todos.remove);
 const setCompleted = useMutation(api.todos.setCompleted);
 
-const todoText = ref('');
+const { handleSubmit, resetForm } = useForm({
+  validationSchema: toTypedSchema(
+    object({
+      text: string().min(1)
+    })
+  )
+});
 
-const onSubmit = async () => {
-  await addTodo({ text: todoText.value });
-  todoText.value = '';
-};
+const onSubmit = handleSubmit(async values => {
+  await addTodo(values);
+  resetForm();
+});
 </script>
 
 <template>
@@ -28,43 +36,28 @@ const onSubmit = async () => {
           @change="setCompleted({ id: todo._id, completed: todo.completed })"
         />
         {{ todo.text }}
-        <button @click="removeTodo({ id: todo._id })">
-          <UiIcon icon="mdi:close" />
-        </button>
+        <UiIconButton
+          icon="mdi:close"
+          title="remove todo"
+          style="--button-color: var(--error)"
+          @click="removeTodo({ id: todo._id })"
+        />
       </li>
     </ul>
 
     <form class="space-y-2" @submit.prevent="onSubmit">
-      <label for="text">What needs to be done ?</label>
-      <input v-model="todoText" />
+      <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm">
+        <UiFormLabel for="text">What needs to be done ?</UiFormLabel>
+        <UiTextInput v-bind="inputProps" id="text" />
+        <UiFormError :error="error" />
+      </UiFormControl>
 
-      <button>Add todo</button>
+      <UiButton>Add todo</UiButton>
     </form>
   </main>
 </template>
 
 <style scoped lang="postcss">
-form {
-  > :is(label, input) {
-    display: block;
-  }
-
-  > input {
-    border: solid var(--border-size-1) var(--gray-5);
-  }
-
-  > button {
-    padding-block: var(--size-1);
-    padding-inline: var(--size-2);
-
-    font-weight: var(--font-weight-5);
-    color: white;
-
-    background-color: var(--blue-7);
-    border-radius: var(--radius-2);
-  }
-}
-
 li {
   display: flex;
   gap: var(--size-2);
@@ -72,13 +65,6 @@ li {
 
   &:has(input:checked) {
     text-decoration: line-through;
-  }
-
-  > button {
-    padding: 0;
-    color: var(--red-7);
-    background-color: transparent;
-    border: none;
   }
 }
 </style>

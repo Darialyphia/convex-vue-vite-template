@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 import AutoImport from 'unplugin-auto-import/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import Components from 'unplugin-vue-components/vite';
+import { ArkUiResolver } from './tools/ark-ui-resolver';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
@@ -39,7 +40,8 @@ export default defineConfig({
       dts: true,
       extensions: ['vue'],
       globs: ['./src/components/**/*.vue'],
-      directoryAsNamespace: false
+      directoryAsNamespace: false,
+      resolvers: [ArkUiResolver]
     }),
 
     VitePWA({

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const modelValue = defineModel<boolean>();
+import type { Nullable } from '@/utils/types';
+
+const modelValue = defineModel<Nullable<boolean>>({ required: true });
 
 const toggle = () => {
   modelValue.value = !modelValue.value;
