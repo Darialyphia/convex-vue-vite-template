@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { api } from '@/api';
+import { usePaginatedQuery } from '@/composables/convex/usePaginatedQuery';
+import Todo from './Todo.vue';
 
 const ITEMS_PER_PAGE = 5;
 const {
@@ -12,11 +14,11 @@ const {
 <template>
   <p v-if="!todos.length">No todos yet !</p>
 
-  <div v-auto-animate class="grid gap-1">
+  <div class="grid gap-1">
     <Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
   </div>
 
-  <UiButton :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
+  <button :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
     Load more
-  </UiButton>
+  </button>
 </template>

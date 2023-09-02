@@ -3,6 +3,8 @@ import {
   type FunctionReference,
   type OptionalRestArgs
 } from 'convex/server';
+import { onUnmounted, ref, type Ref } from 'vue';
+import { useConvex } from './useConvex';
 
 export type QueryReference = FunctionReference<'query'>;
 

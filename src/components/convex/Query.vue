@@ -2,6 +2,7 @@
 import type { Nullable } from '@/utils/types';
 import type { DefaultFunctionArgs, FunctionReference } from 'convex/server';
 import { api } from '@/api';
+import { ref, onErrorCaptured, computed } from 'vue';
 
 type QueryFunc = FunctionReference<'query', 'public', TArgs, TData>;
 

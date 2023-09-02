@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useConvexAuth } from '@/composables/convex/useConvex';
+import { useAuth0 } from '@auth0/auth0-vue';
+
 const { isLoading, isAuthenticated } = useConvexAuth();
 const { user } = useAuth0();
 </script>

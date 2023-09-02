@@ -1,4 +1,6 @@
 import { makeFunctionReference, type FunctionReference } from 'convex/server';
+import { useConvex } from './useConvex';
+import { readonly, ref } from 'vue';
 
 export type ActionReference = FunctionReference<'action'>;
 export function useAction<Action extends ActionReference>(action: Action) {
@@ -12,7 +14,7 @@ export function useAction<Action extends ActionReference>(action: Action) {
   const isLoading = ref(false);
 
   return {
-    isLoading,
+    isLoading: readonly(isLoading),
     execute: async (args?: Action['_args']): Promise<Action['_returnType']> => {
       try {
         isLoading.value = true;

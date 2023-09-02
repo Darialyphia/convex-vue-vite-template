@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { api } from '@/api';
+import { useMutation } from '@/composables/convex/useMutation';
 import type { Doc } from 'convex/_generated/dataModel';
 
 const { todo } = defineProps<{
@@ -17,24 +18,12 @@ const { mutate: setCompleted } = useMutation(api.todos.setCompleted);
       @change="setCompleted({ id: todo._id, completed: !todo.completed })"
     />
     {{ todo.text }}
-    <UiIconButton
-      icon="mdi:close"
+    <button
       title="remove todo"
-      style="--button-color: var(--error)"
       :disabled="isRemoving"
       @click="removeTodo({ id: todo._id })"
-    />
+    >
+      X
+    </button>
   </article>
 </template>
-
-<style scoped lang="postcss">
-article {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-
-  &:has(input:checked) {
-    text-decoration: line-through;
-  }
-}
-</style>

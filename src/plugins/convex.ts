@@ -1,4 +1,12 @@
-import type { App, InjectionKey, Plugin, Ref } from 'vue';
+import {
+  ref,
+  type App,
+  type InjectionKey,
+  type Plugin,
+  type Ref,
+  watchEffect,
+  readonly
+} from 'vue';
 import type { Router } from 'vue-router/auto';
 import type { RouteLocationNormalized } from 'vue-router/auto';
 import type { RouteLocationRaw } from 'vue-router/auto';
@@ -20,6 +28,7 @@ import {
   type OptionalRestArgs
 } from 'convex/server';
 import type { Value } from 'convex/values';
+import { until } from '@vueuse/core';
 
 export type UserIdentityAttributes = Omit<UserIdentity, 'tokenIdentifier'>;
 

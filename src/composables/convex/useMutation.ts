@@ -1,5 +1,7 @@
 import type { OptimisticUpdate } from 'convex/browser';
 import { makeFunctionReference, type FunctionReference } from 'convex/server';
+import { readonly, ref } from 'vue';
+import { useConvex } from './useConvex';
 
 export type MutationReference = FunctionReference<'mutation'>;
 export function useMutation<Mutation extends MutationReference>(
@@ -16,7 +18,7 @@ export function useMutation<Mutation extends MutationReference>(
   const isLoading = ref(false);
 
   return {
-    isLoading,
+    isLoading: readonly(isLoading),
     mutate: async (args?: Mutation['_args']): Promise<Mutation['_returnType']> => {
       try {
         isLoading.value = true;

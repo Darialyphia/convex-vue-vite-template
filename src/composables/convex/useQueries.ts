@@ -1,4 +1,4 @@
-import type { Ref } from 'vue';
+import { watchEffect, type Ref, onUnmounted, ref } from 'vue';
 import type { Value } from 'convex/values';
 import type { QueryReference } from './useQuery';
 import type { QueryJournal } from 'convex/browser';
@@ -6,6 +6,7 @@ import type { QueryJournal } from 'convex/browser';
 import type { Watch } from '@/plugins/convex';
 import { QueriesObserver } from '@/utils/convex/QueriesObserver';
 import type { FunctionReference } from 'convex/server';
+import { useConvex } from './useConvex';
 
 export function useQueries(
   queries: Ref<RequestForQueries>

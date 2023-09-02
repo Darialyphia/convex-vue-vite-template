@@ -1,5 +1,7 @@
 import { makeFunctionReference, type OptionalRestArgs } from 'convex/server';
 import type { QueryReference } from './useQuery';
+import { onUnmounted, ref, type Ref } from 'vue';
+import { useConvex } from './useConvex';
 
 export const useSuspenseQuery = <Query extends QueryReference>(
   query: Query,
