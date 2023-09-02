@@ -15,7 +15,7 @@ Everything should be setup to work properly.
   - `useQuery`
   - `useSuspenseQuery` : like useQuery but can be awaited and will resolve once the query result is available (either from cache or from a network call). This enables you to use this composable in conjuction with Vue's [`<Suspense />`](https://vuejs.org/guide/built-ins/suspense.html). Note: like useQuery, the value will be reactive and will update automatically when it's value changes on the Convex server.
   - `usePaginatedQuery`: ⚠️ Not available yet
-  - `useMutation`: ⚠️ Optimistic updates are not available yet
+  - `useMutation`
   - `useAction`
   - `useConvex`: if you need to use the ConvexVueClient cirectly
   - `useConvexAuth`: if you used the `auth0` option in the plugin, it will return you the loading and authenticated state. For additional auth utilities like login, logout, user etc, please use `useAuth0` from `@auth0/auth0-vue`

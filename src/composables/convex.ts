@@ -5,6 +5,7 @@ import {
 } from 'convex/server';
 import type { Ref } from 'vue';
 import { CONVEX_INJECTION_KEY, CONVEX_AUTH_INJECTION_KEY } from '@/plugins/convex';
+import type { OptimisticUpdate } from 'convex/browser';
 
 export const useConvex = () => {
   return useSafeInject(CONVEX_INJECTION_KEY);
@@ -63,7 +64,10 @@ export const useSuspenseQuery = <Query extends QueryReference>(
 };
 
 type MutationReference = FunctionReference<'mutation'>;
-export function useMutation<Mutation extends MutationReference>(mutation: Mutation) {
+export function useMutation<Mutation extends MutationReference>(
+  mutation: Mutation,
+  { optimisticUpdate }: { optimisticUpdate?: OptimisticUpdate<Mutation['_args']> } = {}
+) {
   const convex = useConvex();
 
   const mutationReference =
@@ -78,7 +82,9 @@ export function useMutation<Mutation extends MutationReference>(mutation: Mutati
     mutate: async (args?: Mutation['_args']): Promise<Mutation['_returnType']> => {
       try {
         isLoading.value = true;
-        return await convex.mutation(mutationReference, args, {});
+        return await convex.mutation(mutationReference as Mutation, args, {
+          optimisticUpdate
+        });
       } finally {
         isLoading.value = false;
       }
