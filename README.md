@@ -4,6 +4,8 @@ Template to easily use [Convex](https://www.convex.dev/) with [Vue](https://vuej
 
 Everything should be setup to work properly.
 
+[Click here to go to the deployed app (from the master branch)](https://vue-convex-example.vercel.app/)
+
 - A `createConvex` vue plugin has been created to instanciated a slightly modified version of the `ConvexReactClient`.
 - If `auth0` options are provided to the plugin, navigation guards will be added to the application. You can tweak the option to have a different redirect url, or more involved way of determining if an autentication check should be made (by default, add `needsauth: true` to a [route block meta](https://github.com/posva/unplugin-vue-router#sfc-route-custom-block)).
 - ⚠️ You will need to add your auth0 credentials (domain and client ID)
