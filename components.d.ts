@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
     DarkModeToggle: typeof import('./src/components/DarkModeToggle.vue')['default']
+    Ensureauthenticated: typeof import('./src/components/Ensureauthenticated.vue')['default']
+    EnsureAuthenticated: typeof import('./src/components/EnsureAuthenticated.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ServiceWorkerPrompt: typeof import('./src/components/ServiceWorkerPrompt.vue')['default']
