@@ -21,7 +21,6 @@ Everything should be setup to work properly.
 
 ```html
 <script setup lang="ts">
-  import { useQuery } from '@/composables/convex';
   import { api } from '@/api';
 
   const messages = useQuery(api.messages.list);
@@ -40,7 +39,6 @@ like useQuery but can be awaited and will resolve once the query result is avail
 
 ```html
 <script setup lang="ts">
-  import { useQuery } from '@/composables/convex';
   import { api } from '@/api';
 
   const messages = await useSuspenseQuery(api.messages.list);
@@ -59,7 +57,6 @@ like useQuery but can be awaited and will resolve once the query result is avail
 ```html
 <script setup lang="ts">
   import { api } from '@/api';
-  import { usePaginatedQuery } from '@/composables/convex';
 
   const ITEMS_PER_PAGE = 5;
   const {
@@ -91,8 +88,6 @@ Now with optimistic updates ! (🧪)
 ```html
 <script setup lang="ts">
   import { api } from '@/api';
-  import { useMutation } from '@/composables/convex';
-  import { reactive } from 'vue';
 
   const { isLoading, mutate: addMessage } = useMutation(api.messages.add, {
     optimisticUpdate: (localStore, args) => {
@@ -135,9 +130,8 @@ Now with optimistic updates ! (🧪)
 ```html
 <script setup lang="ts">
   import { api } from '@/api';
-  import { useAction } from '@/composables/convex';
 
-  const { isLoading, execute } = useAction(api.some.actio);
+  const { isLoading, execute } = useAction(api.some.action);
 </script>
 
 <template>
@@ -172,8 +166,6 @@ It accepts the following slots:
 
 ```html
 <script setup lang="ts">
-  import { useAuth0 } from '@auth0/auth0-vue';
-
   const { loginWithRedirect } = useAuth0();
 </script>
 
