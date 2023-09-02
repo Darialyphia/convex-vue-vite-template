@@ -3,7 +3,7 @@ import { api } from '@/api';
 import { useMutation } from '@/composables/convex';
 import { reactive } from 'vue';
 
-const addTodo = useMutation(api.todos.add);
+const { isLoading, mutate: addTodo } = useMutation(api.todos.add);
 
 const form = reactive({
   text: ''
@@ -19,6 +19,6 @@ const onSubmit = async () => {
   <form class="space-y-2" @submit.prevent="onSubmit">
     <label for="text">What needs to be done ?</label>
     <input id="text" v-model="form.text" />
-    <button>Add todo</button>
+    <button :disabled="isLoading">Add todo</button>
   </form>
 </template>

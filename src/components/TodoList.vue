@@ -3,7 +3,7 @@ import { api } from '@/api';
 import { useSuspenseQuery, useMutation } from '@/composables/convex';
 
 const todos = await useSuspenseQuery(api.todos.list);
-const removeTodo = useMutation(api.todos.remove);
+const { isLoading: isRemoving, mutate: removeTodo } = useMutation(api.todos.remove);
 const setCompleted = useMutation(api.todos.setCompleted);
 </script>
 
@@ -15,10 +15,16 @@ const setCompleted = useMutation(api.todos.setCompleted);
       <input
         v-model="todo.completed"
         type="checkbox"
-        @change="setCompleted({ id: todo._id, completed: todo.completed })"
+        @change="setCompleted.mutate({ id: todo._id, completed: todo.completed })"
       />
       {{ todo.text }}
-      <button title="remove todo" @click="removeTodo({ id: todo._id })">X</button>
+      <button
+        title="remove todo"
+        :disabled="isRemoving"
+        @click="removeTodo({ id: todo._id })"
+      >
+        X
+      </button>
     </li>
   </ul>
 </template>
