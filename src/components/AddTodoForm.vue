@@ -8,21 +8,20 @@ import { vFocusOn } from '@/directives/vFocusOn';
 const { user } = useAuth0();
 const { isLoading, mutate: addTodo } = useMutation(api.todos.add, {
   optimisticUpdate: (localStore, args) => {
-    const currentValue = localStore.getQuery(api.todos.list, { seed: 0 });
+    const currentValue = localStore.getQuery(api.todos.list, {});
+    if (currentValue === undefined) return;
 
-    if (currentValue !== undefined) {
-      localStore.setQuery(
-        api.todos.list,
-        { seed: 0 },
-        currentValue.concat({
-          _id: 'optimistic' as Id<'todos'>,
-          _creationTime: Date.now(),
-          text: args.text,
-          completed: false,
-          userId: user.value!.sub!
-        })
-      );
-    }
+    localStore.setQuery(
+      api.todos.list,
+      {},
+      currentValue.concat({
+        _id: 'optimistic' as Id<'todos'>,
+        _creationTime: Date.now(),
+        text: args.text,
+        completed: false,
+        userId: user.value!.sub!
+      })
+    );
   }
 });
 

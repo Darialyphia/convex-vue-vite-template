@@ -14,7 +14,7 @@ Everything should be setup to work properly.
 - Composables have been made to easily use the convex client. They are:
   - `useQuery`
   - `useSuspenseQuery` : like useQuery but can be awaited and will resolve once the query result is available (either from cache or from a network call). This enables you to use this composable in conjuction with Vue's [`<Suspense />`](https://vuejs.org/guide/built-ins/suspense.html). Note: like useQuery, the value will be reactive and will update automatically when it's value changes on the Convex server.
-  - `usePaginatedQuery`: ⚠️ Not available yet
+  - `usePaginatedQuery`
   - `useMutation`
   - `useAction`
   - `useConvex`: if you need to use the ConvexVueClient cirectly

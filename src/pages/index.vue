@@ -15,7 +15,6 @@ const { isLoading } = useConvexAuth();
 
     <section class="surface">
       <EnsureAuthenticated>
-        <TodoList />
         <template #loading>
           <div class="center">
             <UiSpinner size="lg" />
@@ -26,6 +25,8 @@ const { isLoading } = useConvexAuth();
           You must be logged in to see your todos
           <UiButton :is-loading="isLoading" @click="loginWithRedirect">Login</UiButton>
         </template>
+
+        <TodoListPaginated />
       </EnsureAuthenticated>
     </section>
   </main>

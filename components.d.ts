@@ -20,6 +20,7 @@ declare module 'vue' {
     ServiceWorkerPrompt: typeof import('./src/components/ServiceWorkerPrompt.vue')['default']
     Todo: typeof import('./src/components/Todo.vue')['default']
     TodoList: typeof import('./src/components/TodoList.vue')['default']
+    TodoListPaginated: typeof import('./src/components/TodoListPaginated.vue')['default']
     UiButton: typeof import('./src/components/ui/buttons/UiButton.vue')['default']
     UiButtonBase: typeof import('./src/components/ui/buttons/UiButtonBase.vue')['default']
     UiCheckbox: typeof import('./src/components/ui/inputs/UiCheckbox.vue')['default']

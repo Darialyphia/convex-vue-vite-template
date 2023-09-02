@@ -13,3 +13,26 @@ export type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extend
   ? R
   : any;
 export type MaybePromise<T> = T | Promise<T>;
+/**
+ * Hack! This type causes TypeScript to simplify how it renders object types.
+ *
+ * It is functionally the identity for object types, but in practice it can
+ * simplify expressions like `A & B`.
+ */
+export type Expand<ObjectType extends Record<any, any>> = ObjectType extends Record<
+  any,
+  any
+>
+  ? {
+      [Key in keyof ObjectType]: ObjectType[Key];
+    }
+  : never;
+
+/**
+ * An `Omit<>` type that:
+ * 1. Applies to each element of a union.
+ * 2. Preserves the index signature of the underlying type.
+ */
+export type BetterOmit<T, K extends keyof T> = {
+  [Property in keyof T as Property extends K ? never : Property]: T[Property];
+};

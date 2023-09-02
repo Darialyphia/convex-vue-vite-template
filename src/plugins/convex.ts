@@ -6,9 +6,10 @@ import {
   BaseConvexClient,
   type QueryToken,
   type ClientOptions,
-  type OptimisticUpdate
+  type OptimisticUpdate,
+  type QueryJournal
 } from 'convex/browser';
-import type { AuthTokenFetcher, Watch, WatchQueryOptions } from 'convex/react';
+import type { AuthTokenFetcher } from 'convex/react';
 import {
   getFunctionName,
   type ArgsAndOptions,
@@ -30,6 +31,17 @@ export type ConnectionState = {
 
 export interface MutationOptions<Args extends Record<string, Value>> {
   optimisticUpdate?: OptimisticUpdate<Args>;
+}
+
+export interface Watch<T> {
+  onUpdate(callback: () => void): () => void;
+  localQueryResult(): T | undefined;
+  localQueryLogs(): string[] | undefined;
+  journal(): QueryJournal | undefined;
+}
+
+export interface WatchQueryOptions {
+  journal?: QueryJournal;
 }
 
 export class ConvexVueClient {
@@ -152,7 +164,6 @@ export class ConvexVueClient {
         return undefined;
       },
 
-      // @ts-ignore internal deez nuts
       localQueryLogs: () => {
         if (this.cachedSync) {
           // @ts-ignore internal deez nuts
