@@ -95,7 +95,7 @@ watchEffect(() => {
   gap: var(--size-1);
   align-items: center;
 
-  background-color: var(--surface-1);
+  background-color: var(--surface-2);
   border: solid 1px var(--border-dimmed);
   border-radius: var(--radius-1);
 

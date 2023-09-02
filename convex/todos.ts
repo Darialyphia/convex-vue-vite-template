@@ -2,21 +2,6 @@ import { paginationOptsValidator } from 'convex/server';
 import { query, mutation } from './_generated/server';
 import { v } from 'convex/values';
 
-export const list = query({
-  handler: async ctx => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error('Unauthorized');
-    }
-
-    return ctx.db
-      .query('todos')
-      .withIndex('by_userId', q => q.eq('userId', identity.subject))
-      .order('desc')
-      .take(100);
-  }
-});
-
 export const paginatedList = query({
   args: { paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {

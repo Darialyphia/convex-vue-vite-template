@@ -10,7 +10,7 @@ declare module 'vue' {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
     DarkModeToggle: typeof import('./src/components/DarkModeToggle.vue')['default']
     Ensureauthenticated: (typeof import('./src/components/Ensureauthenticated.vue'))['default']
-    EnsureAuthenticated: typeof import('./src/components/EnsureAuthenticated.vue')['default']
+    EnsureAuthenticated: typeof import('./src/components/convex/EnsureAuthenticated.vue')['default']
     FocusOn: (typeof import('./src/directives/vFocusOn'))['default']
     Query: typeof import('./src/components/convex/Query.vue')['default']
     QueryErrorBoundary: typeof import('./src/components/QueryErrorBoundary.vue')['default']
