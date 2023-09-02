@@ -4,6 +4,8 @@ Template to easily use [Convex](https://www.convex.dev/) with [Vue](https://vuej
 
 Everything should be setup to work properly.
 
+[Click here to go to the deployed app](https://vue-convex-example.vercel.app/)
+
 **This branch adds a bunch of goodies that I like to use for my vue projects and can be fairly opinionated, if you're only interested in the convex stuff, check the [minimal branch](https://github.com/loicpennequin/convex-vue-vite-template/tree/minimal)**
 
 - A `createConvex` vue plugin has been created to instanciated a slightly modified version of the `ConvexReactClient`.
