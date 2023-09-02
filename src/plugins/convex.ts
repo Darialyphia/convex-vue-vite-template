@@ -332,6 +332,7 @@ export const createConvex = (
       } else {
         convex.clearAuth();
         isConvexAuthenticated.value = false;
+        isConvexAuthLoading.value = false;
       }
     });
 
