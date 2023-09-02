@@ -1,9 +1,11 @@
 <script setup lang="ts" generic="TFunc extends PaginatedQueryReference">
 import { api } from '@/api';
-import type {
-  PaginatedQueryArgs,
-  PaginatedQueryReference
+import {
+  usePaginatedQuery,
+  type PaginatedQueryArgs,
+  type PaginatedQueryReference
 } from '@/composables/convex/usePaginatedQuery';
+import { useSlots } from 'vue';
 
 const { query, args, numItems } = defineProps<{
   query: (_api: typeof api) => TFunc;
@@ -17,8 +19,6 @@ const {
   isLoading,
   loadMore
 } = usePaginatedQuery(query(api), args, { initialNumItems: numItems });
-
-const slots = useSlots();
 </script>
 
 <template>
@@ -28,10 +28,7 @@ const slots = useSlots();
     :status="status"
     :load-more="(num: number = numItems) => loadMore(num)"
   >
-    <div class="center">
-      loading slot
-      <UiSpinner />
-    </div>
+    <div class="center">Loading...</div>
   </slot>
 
   <slot

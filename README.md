@@ -38,7 +38,7 @@ like useQuery but can be awaited and will resolve once the query result is avail
 
 ```html
 <script setup lang="ts">
-  import { useQuery } from '@/composables/convex';
+  import { useSuspenseQuery } from '@/composables/convex';
   import { api } from '@/api';
 
   const messages = await useSuspenseQuery(api.messages.list);
@@ -135,7 +135,7 @@ Now with optimistic updates ! (🧪)
   import { api } from '@/api';
   import { useAction } from '@/composables/convex';
 
-  const { isLoading, execute } = useAction(api.some.actio);
+  const { isLoading, execute } = useAction(api.some.action);
 </script>
 
 <template>
@@ -152,8 +152,9 @@ if you need to use the ConvexVueClient directly. You probably don't need it.
 if you used the `auth0` option in the plugin, it will return you the loading and authenticated state. For additional auth utilities like login, logout, user etc, please use `useAuth0` from `@auth0/auth0-vue`
 
 ```html
-<script setup lang="html">
-  const { isLoading, isAuthenticated } = useConvexAuth()
+<script setup lang="ts">
+  import { useConvexAuth } from '@/composables/convex';
+  const { isLoading, isAuthenticated } = useConvexAuth();
 </script>
 ```
 
@@ -170,6 +171,7 @@ It accepts the following slots:
 
 ```html
 <script setup lang="ts">
+  import EnsureAuthenticated from '@/components/convex/Ensureauthenticated';
   import { useAuth0 } from '@auth0/auth0-vue';
 
   const { loginWithRedirect } = useAuth0();
@@ -207,6 +209,8 @@ It will also emit the error when / if it happens.
 
 ```html
 <script setup lang="ts">
+  import Query from '@/components/convex/Query.vue'
+
   const handleError = (err: Error) => sendErrorToAnalytics(err);
 </script>
 
@@ -225,6 +229,42 @@ It will also emit the error when / if it happens.
 </Query>
 ```
 
-### 🔨 `<PaginatedQuery />`
+### 🧪 `<PaginatedQuery />`
 
-Yo Gimme a minute
+Similar to `<Query />`, but handles pagination
+
+```html
+<script setup lang="ts">
+  import PaginatedQuery from '@/components/convex/PaginatedQuery.vue';
+  const ITEMS_PER_PAGE = 5;
+</script>
+
+<template>
+  <PaginatedQuery
+    v-slot="{ data: todos, status, loadMore }"
+    :num-items="ITEMS_PER_PAGE"
+    :query="api => api.messages.paginatedList"
+    :args="{}"
+  >
+    <template #loading>Loading messages...</template>
+
+    <template #error="{ error, clearError}">
+      An error has occured
+      <pre>{{ error }}</pre>
+      <button @click="clearError">Retry</button>
+    </template>
+
+    <template #default="{ data: messages, status, loadMore }">
+      <p v-if="!messages.length">No todos yet !</p>
+
+      <ul>
+        <li v-for="message in messages" :key="message._id">{{message.text}}</li>
+      </ul>
+
+      <UiButton :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
+        Load more
+      </UiButton>
+    </template>
+  </PaginatedQuery>
+</template>
+```

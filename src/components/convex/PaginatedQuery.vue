@@ -5,6 +5,9 @@ import type {
   PaginatedQueryReference
 } from '@/composables/convex/usePaginatedQuery';
 import type { Nullable } from '@/utils/types';
+import { onErrorCaptured, ref } from 'vue';
+
+import PaginatedQueryInner from './PaginatedQueryInner.vue';
 
 const {
   query,
@@ -26,6 +29,7 @@ const error = ref<Nullable<string>>();
 onErrorCaptured(err => {
   error.value = err.message;
   emit('error', err);
+
   return propagateError;
 });
 
@@ -39,7 +43,7 @@ const clearError = () => {
     <div class="center gap-3">
       Looks like something went wrong.
       <pre class="p-3 bg-surface-2">{{ error }}</pre>
-      <UiButton @click="clearError">Retry</UiButton>
+      <button @click="clearError">Retry</button>
     </div>
   </slot>
 

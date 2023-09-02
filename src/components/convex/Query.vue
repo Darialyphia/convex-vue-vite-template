@@ -4,11 +4,18 @@ import type { DefaultFunctionArgs, FunctionReference } from 'convex/server';
 import { api } from '@/api';
 import { ref, onErrorCaptured, computed } from 'vue';
 
+import QueryInner from './QueryInner.vue';
+
 type QueryFunc = FunctionReference<'query', 'public', TArgs, TData>;
 
-const { query, args } = defineProps<{
+const {
+  query,
+  args,
+  propagateError = false
+} = defineProps<{
   query: (_api: typeof api) => QueryFunc;
   args: QueryFunc['_args'];
+  propagateError?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -19,6 +26,8 @@ const error = ref<Nullable<string>>();
 onErrorCaptured(err => {
   error.value = err.message;
   emit('error', err);
+
+  return propagateError;
 });
 
 const clearError = () => {
