@@ -12,7 +12,7 @@ export const paginatedList = query({
 
     return ctx.db
       .query('todos')
-      .withIndex('by_userId', q => q.eq('userId', identity.subject))
+      .withIndex('by_userId', q => q.eq('userId', identity!.subject!))
       .order('desc')
       .paginate(args.paginationOpts);
   }

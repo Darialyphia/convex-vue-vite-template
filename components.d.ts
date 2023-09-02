@@ -12,6 +12,8 @@ declare module 'vue' {
     Ensureauthenticated: (typeof import('./src/components/Ensureauthenticated.vue'))['default']
     EnsureAuthenticated: typeof import('./src/components/convex/EnsureAuthenticated.vue')['default']
     FocusOn: (typeof import('./src/directives/vFocusOn'))['default']
+    PaginatedQuery: typeof import('./src/components/convex/PaginatedQuery.vue')['default']
+    PaginatedQueryInner: typeof import('./src/components/convex/PaginatedQueryInner.vue')['default']
     Query: typeof import('./src/components/convex/Query.vue')['default']
     QueryErrorBoundary: typeof import('./src/components/QueryErrorBoundary.vue')['default']
     QueryInner: typeof import('./src/components/convex/QueryInner.vue')['default']

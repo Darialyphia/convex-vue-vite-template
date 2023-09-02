@@ -108,6 +108,7 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   }>(createInitialState());
 
   const resultsObject = useQueries(computed(() => state.value.queries));
+
   const hasRecoverableError = computed(() => {
     let hasError = false;
     for (let i = 0; i <= state.value.maxQueryIndex; i++) {
@@ -176,6 +177,17 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
       lastPage = resultsObject.value[i];
       if (lastPage === undefined) {
         break;
+      }
+      if (
+        lastPage instanceof Error &&
+        !lastPage.message.includes('InvalidCursor') &&
+        !lastPage.message.includes('ArrayTooLong') &&
+        !lastPage.message.includes('TooManyReads') &&
+        !lastPage.message.includes('TooManyDocumentsRead') &&
+        !lastPage.message.includes('ReadsTooLarge')
+      ) {
+        console.log('throwing');
+        throw lastPage;
       }
       allPages.push(...lastPage.page);
     }

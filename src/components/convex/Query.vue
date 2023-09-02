@@ -5,9 +5,14 @@ import { api } from '@/api';
 
 type QueryFunc = FunctionReference<'query', 'public', TArgs, TData>;
 
-const { query, args } = defineProps<{
+const {
+  query,
+  args,
+  propagateError = false
+} = defineProps<{
   query: (_api: typeof api) => QueryFunc;
   args: QueryFunc['_args'];
+  propagateError?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -18,6 +23,7 @@ const error = ref<Nullable<string>>();
 onErrorCaptured(err => {
   error.value = err.message;
   emit('error', err);
+  return propagateError;
 });
 
 const clearError = () => {

@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { api } from '@/api';
-
+api.todos.paginatedList;
 const ITEMS_PER_PAGE = 5;
-const {
-  results: todos,
-  status,
-  loadMore
-} = usePaginatedQuery(api.todos.paginatedList, {}, { initialNumItems: ITEMS_PER_PAGE });
 </script>
 
 <template>
-  <p v-if="!todos.length">No todos yet !</p>
+  <PaginatedQuery
+    v-slot="{ data: todos, status, loadMore }"
+    :num-items="ITEMS_PER_PAGE"
+    :query="api => api.todos.paginatedList"
+    :args="{}"
+  >
+    <p v-if="!todos.length">No todos yet !</p>
 
-  <div v-auto-animate class="grid gap-1">
-    <Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
-  </div>
+    <div v-auto-animate class="grid gap-1">
+      <Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
+    </div>
 
-  <UiButton :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
-    Load more
-  </UiButton>
+    <UiButton :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
+      Load more
+    </UiButton>
+  </PaginatedQuery>
 </template>
