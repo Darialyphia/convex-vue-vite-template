@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { api } from '@/api';
-api.todos.paginatedList;
 const ITEMS_PER_PAGE = 5;
 </script>
 

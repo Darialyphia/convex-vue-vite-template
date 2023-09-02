@@ -213,7 +213,7 @@ It will also emit the error when / if it happens.
 </script>
 
 <Query :query="api => api.messages.list" :arg="{ sentBy: 'Bob'}" @error="handleError">
-  <template #loading>Loading message...</template>
+  <template #loading>Loading messages...</template>
 
   <template #error="{ error, clearError}">
     An error has occured
@@ -227,9 +227,44 @@ It will also emit the error when / if it happens.
 </Query>
 ```
 
-### 🔨 `<PaginatedQuery />`
+### 🧪 `<PaginatedQuery />`
 
-Yo Gimme a minute
+Similar to `<Query />`, but handles pagination
+
+```html
+<script setup lang="ts">
+  const ITEMS_PER_PAGE = 5;
+</script>
+
+<template>
+  <PaginatedQuery
+    v-slot="{ data: todos, status, loadMore }"
+    :num-items="ITEMS_PER_PAGE"
+    :query="api => api.messages.paginatedList"
+    :args="{}"
+  >
+    <template #loading>Loading messages...</template>
+
+    <template #error="{ error, clearError}">
+      An error has occured
+      <pre>{{ error }}</pre>
+      <button @click="clearError">Retry</button>
+    </template>
+
+    <template #default="{ data: messages, status, loadMore }">
+      <p v-if="!messages.length">No todos yet !</p>
+
+      <ul>
+        <li v-for="message in messages" :key="message._id">{{message.text}}</li>
+      </ul>
+
+      <UiButton :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
+        Load more
+      </UiButton>
+    </template>
+  </PaginatedQuery>
+</template>
+```
 
 ## Additional features
 
