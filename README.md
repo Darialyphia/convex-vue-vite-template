@@ -19,25 +19,145 @@ Everything should be setup to work properly.
 
 ### `useQuery`
 
+```html
+<script setup lang="ts">
+  import { useQuery } from '@/composables/convex';
+  import { api } from '@/api';
+
+  const messages = useQuery(api.messages.list);
+</script>
+
+<template>
+  <ul v-if="messages">
+    <li v-for="message in messages" :key="message._id">{{message.text}}</li>
+  </ul>
+</template>
+```
+
 ### `useSuspenseQuery`
 
 like useQuery but can be awaited and will resolve once the query result is available (either from cache or from a network call). This enables you to use this composable in conjuction with Vue's [`<Suspense />`](https://vuejs.org/guide/built-ins/suspense.html). Note: like useQuery, the value will be reactive and will update automatically when it's value changes on the Convex server.
 
+```html
+<script setup lang="ts">
+  import { useQuery } from '@/composables/convex';
+  import { api } from '@/api';
+
+  const messages = await useSuspenseQuery(api.messages.list);
+</script>
+
+<template>
+  <!-- don't forget to add a <Suspense> in the parent component ! -->
+  <ul>
+    <li v-for="message in messages" :key="message._id">{{message.text}}</li>
+  </ul>
+</template>
+```
+
 ### 🧪`usePaginatedQuery`
+
+```html
+<script setup lang="ts">
+  import { api } from '@/api';
+  import { usePaginatedQuery } from '@/composables/convex';
+
+  const ITEMS_PER_PAGE = 5;
+  const {
+    results: messages,
+    status,
+    loadMore
+  } = usePaginatedQuery(
+    api.messages.paginatedList,
+    {},
+    { initialNumItems: ITEMS_PER_PAGE }
+  );
+</script>
+
+<template>
+  <ul>
+    <li v-for="message in messages" :key="message._id">{{message.text}}</li>
+  </ul>
+
+  <button :disabled="status !== 'CanLoadMore'" @click="loadMore(ITEMS_PER_PAGE)">
+    Load more
+  </button>
+</template>
+```
 
 ### `useMutation`
 
 Now with optimistic updates ! (🧪)
 
+```html
+<script setup lang="ts">
+  import { api } from '@/api';
+  import { useMutation } from '@/composables/convex';
+  import { reactive } from 'vue';
+
+  const { isLoading, mutate: addMessage } = useMutation(api.messages.add, {
+    optimisticUpdate: (localStore, args) => {
+      const currentValue = localStore.getQuery(api.messages.list, {});
+      if (currentValue === undefined) return;
+
+      localStore.setQuery(
+        api.messages.list,
+        {},
+        currentValue.concat({
+          _id: 'optimistic' as Id<'todos'>,
+          _creationTime: Date.now(),
+          text: args.text
+        })
+      );
+    }
+  });
+
+  const form = reactive({
+    text: ''
+  });
+
+  const onSubmit = async () => {
+    await addMessage(form);
+    form.text = '';
+  };
+</script>
+
+<template>
+  <form @submit.prevent="onSubmit">
+    <label for="text">Write a new message</label>
+    <input id="text" v-model="form.text" />
+    <button :disabled="isLoading">Add todo</button>
+  </form>
+</template>
+```
+
 ### `useAction`
+
+```html
+<script setup lang="ts">
+  import { api } from '@/api';
+  import { useAction } from '@/composables/convex';
+
+  const { isLoading, execute } = useAction(api.some.actio);
+</script>
+
+<template>
+  <button :disables="isLoading" @click="execute()">Do the action thingie</button>
+</template>
+```
 
 ### `useConvex`
 
-if you need to use the ConvexVueClient directly
+if you need to use the ConvexVueClient directly. You probably don't need it.
 
 ### `useConvexAuth`
 
 if you used the `auth0` option in the plugin, it will return you the loading and authenticated state. For additional auth utilities like login, logout, user etc, please use `useAuth0` from `@auth0/auth0-vue`
+
+```html
+<script setup lang="html">
+  const { isLoading, isAuthenticated } = useConvexAuth()
+</script>
+```
 
 ## Components
 
@@ -49,6 +169,27 @@ It accepts the following slots:
 - default: when the user is logged in
 - fallback: when the user isn't logged in
 - loading: when the authentication process is pending
+
+```html
+<script setup lang="ts">
+  import { useAuth0 } from '@auth0/auth0-vue';
+
+  const { loginWithRedirect } = useAuth0();
+</script>
+
+<template>
+  <EnsureAuthenticated>
+    <template #loading>Authenticating...</template>
+
+    <template #fallback>
+      You need to be logged in to see this content
+      <button @click="loginWithRedirect()">Login</button>
+    </template>
+
+    <template #default="{ user }">Welcome back, {{ user.nickname }} !</template>
+  </EnsureAuthenticated>
+</template>
+```
 
 ### `<Query />`
 
@@ -64,7 +205,27 @@ It accepts the following slots:
 - loading: pending state when the query is loading for the first time
 - error: should be used to displau an error UI. It takes the error as slot props, as well as a `clearError` function to clear the underlying error b boundary (note: doing so will retry the query).
 
-It will also emit the error when / if it happens
+It will also emit the error when / if it happens.
+
+```html
+<script setup lang="ts">
+  const handleError = (err: Error) => sendErrorToAnalytics(err);
+</script>
+
+<Query :query="api => api.messages.list" :arg="{ sentBy: 'Bob'}" @error="handleError">
+  <template #loading>Loading message...</template>
+
+  <template #error="{ error, clearError}">
+    An error has occured
+    <pre>{{ error }}</pre>
+    <button @click="clearError">Retry</button>
+  </template>
+
+  <template #default="{ data: messages }">
+    <ChatWidget :messages="messages">
+  </template>
+</Query>
+```
 
 ### 🔨 `<PaginatedQuery />`
 
