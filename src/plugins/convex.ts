@@ -282,20 +282,12 @@ const installNavigationGuard = (
     if (!needsAuth(to, from)) return next();
 
     await until(authState.isLoading).not.toBe(true);
-
+    console.log(authState.isLoading.value, authState.isAuthenticated.value);
     if (!authState.isAuthenticated.value) {
       return next(redirectTo(to, from));
     }
 
     next();
-  });
-
-  router.isReady().then(async () => {
-    if (!needsAuth(route)) return;
-    await until(authState.isLoading).not.toBe(true);
-    if (!authState.isAuthenticated.value) {
-      return router.replace(redirectTo(route));
-    }
   });
 };
 
@@ -308,10 +300,10 @@ export const createConvex = (
     app.provide(CONVEX_INJECTION_KEY, convex);
 
     if (!options.auth0) return;
-    const isConvexAuthenticated = ref(false);
-
     const { isAuthenticated, isLoading, getAccessTokenSilently } =
       app.config.globalProperties.$auth0;
+    const isConvexAuthenticated = ref(false);
+    const isConvexAuthLoading = ref(isLoading.value);
 
     const fetchAccessToken = async ({
       forceRefreshToken
@@ -335,6 +327,7 @@ export const createConvex = (
       if (isAuthenticated.value) {
         convex.setAuth(fetchAccessToken, isAuth => {
           isConvexAuthenticated.value = isAuth;
+          isConvexAuthLoading.value = false;
         });
       } else {
         convex.clearAuth();
@@ -342,8 +335,14 @@ export const createConvex = (
       }
     });
 
+    watchEffect(() => {
+      if (!isConvexAuthLoading.value && isLoading.value) {
+        isConvexAuthLoading.value = true;
+      }
+    });
+
     const authState = {
-      isLoading: readonly(isLoading),
+      isLoading: readonly(isConvexAuthLoading),
       isAuthenticated: readonly(isConvexAuthenticated)
     };
     app.provide(CONVEX_AUTH_INJECTION_KEY, authState);

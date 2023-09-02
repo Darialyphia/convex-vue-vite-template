@@ -4,7 +4,16 @@ import { v } from 'convex/values';
 export const list = query({
   args: {},
   handler: async ctx => {
-    return ctx.db.query('todos').order('desc').take(100);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error('Unauthorized');
+    }
+
+    return ctx.db
+      .query('todos')
+      .withIndex('by_userId', q => q.eq('userId', identity?.subject))
+      .order('desc')
+      .take(100);
   }
 });
 
@@ -18,7 +27,11 @@ export const remove = mutation({
 export const add = mutation({
   args: { text: v.string() },
   handler: async (ctx, { text }) => {
-    await ctx.db.insert('todos', { text, completed: false });
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error('Unauthorized');
+    }
+    await ctx.db.insert('todos', { text, completed: false, userId: identity.subject });
   }
 });
 
