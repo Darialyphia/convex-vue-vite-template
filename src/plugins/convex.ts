@@ -1,4 +1,12 @@
-import type { InjectionKey, Plugin, Ref } from 'vue';
+import {
+  ref,
+  watchEffect,
+  readonly,
+  type InjectionKey,
+  type Plugin,
+  type Ref
+} from 'vue';
+import { until } from '@vueuse/core';
 import type { Router } from 'vue-router/auto';
 import type { RouteLocationNormalized } from 'vue-router/auto';
 import type { RouteLocationRaw } from 'vue-router/auto';
@@ -332,6 +340,7 @@ export const createConvex = (
       } else {
         convex.clearAuth();
         isConvexAuthenticated.value = false;
+        isConvexAuthLoading.value = false;
       }
     });
 
