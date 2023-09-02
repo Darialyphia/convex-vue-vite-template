@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
+    EnsureAuthenticated: typeof import('./src/components/EnsureAuthenticated.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TodoList: typeof import('./src/components/TodoList.vue')['default']
