@@ -13,7 +13,6 @@ const { isAuthenticated, isLoading } = useConvexAuth();
       <Suspense>
         <EnsureAuthenticated>
           <TodoList />
-
           <template #loading>
             <div class="center">
               <UiSpinner size="lg" />

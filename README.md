@@ -19,7 +19,7 @@ Everything should be setup to work properly.
   - `useAction`
   - `useConvex`: if you need to use the ConvexVueClient cirectly
   - `useConvexAuth`: if you used the `auth0` option in the plugin, it will return you the loading and authenticated state. For additional auth utilities like login, logout, user etc, please use `useAuth0` from `@auth0/auth0-vue`
-  - `<EnsureAuthenticated />` helper component to display things only when the user is logged in. Takes a `loading` and `fallback` slots
+  - `<EnsureAuthenticated />` helper component to display things only when the user is logged in. Takes a `loading` and `fallback` slots. The default slot receives the connected user object as slot props
 
 This branch adds a lot of other stuff for better DX and overall more batteries included
 
