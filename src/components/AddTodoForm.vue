@@ -3,16 +3,17 @@ import { api } from '@/api';
 import { toTypedSchema } from '@vee-validate/zod';
 import type { Id } from 'convex/_generated/dataModel';
 import { object, string } from 'zod';
+import { vFocusOn } from '@/directives/vFocusOn';
 
 const { user } = useAuth0();
 const { isLoading, mutate: addTodo } = useMutation(api.todos.add, {
   optimisticUpdate: (localStore, args) => {
-    const currentValue = localStore.getQuery(api.todos.list);
+    const currentValue = localStore.getQuery(api.todos.list, { seed: 0 });
 
     if (currentValue !== undefined) {
       localStore.setQuery(
         api.todos.list,
-        {},
+        { seed: 0 },
         currentValue.concat({
           _id: 'optimistic' as Id<'todos'>,
           _creationTime: Date.now(),
@@ -39,13 +40,18 @@ const onSubmit = handleSubmit(async values => {
 });
 
 const { isAuthenticated } = useConvexAuth();
+
+const focus = useFocus();
+onMounted(() => {
+  focus('foo');
+});
 </script>
 
 <template>
   <form class="space-y-2" @submit.prevent="onSubmit">
     <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm">
       <UiFormLabel for="text">What needs to be done ?</UiFormLabel>
-      <UiTextInput v-bind="inputProps" id="text" />
+      <UiTextInput v-bind="inputProps" id="text" v-focus-on="'foo'" />
       <UiFormError :error="error" :is-always-visible="false" />
     </UiFormControl>
 

@@ -4601,6 +4601,11 @@ minimist-options@4.1.0:
     is-plain-obj "^1.1.0"
     kind-of "^6.0.3"
 
+mitt@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
+  integrity sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==
+
 mlly@^1.2.0, mlly@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/mlly/-/mlly-1.4.1.tgz#7ab9cbb040bf8bd8205a0c341ce9acc3ae0c3a74"

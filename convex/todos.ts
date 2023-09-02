@@ -2,8 +2,13 @@ import { query, mutation } from './_generated/server';
 import { v } from 'convex/values';
 
 export const list = query({
-  args: {},
-  handler: async ctx => {
+  args: {
+    seed: v.number()
+  },
+  handler: async (ctx, { seed }) => {
+    if (seed === 0) {
+      throw new Error('First try always fails !');
+    }
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error('Unauthorized');
@@ -11,7 +16,7 @@ export const list = query({
 
     return ctx.db
       .query('todos')
-      .withIndex('by_userId', q => q.eq('userId', identity?.subject))
+      .withIndex('by_userId', q => q.eq('userId', identity.subject))
       .order('desc')
       .take(100);
   }

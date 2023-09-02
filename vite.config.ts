@@ -39,7 +39,7 @@ export default defineConfig({
     Components({
       dts: true,
       extensions: ['vue'],
-      globs: ['./src/components/**/*.vue'],
+      globs: ['./src/components/**/*.vue', './src/directives/**/*.ts'],
       directoryAsNamespace: false,
       resolvers: [ArkUiResolver]
     }),

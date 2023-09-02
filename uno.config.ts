@@ -35,13 +35,4 @@ export default defineConfig({
   theme: {
     colors: themeColors
   }
-
-  // theme: {
-  //   colors: {
-  //     primary: 'var(--primary)'
-  //   }
-  // }
-  // content: {
-  //   filesystem: ['**/*.{html,ts,vue}']
-  // }
 });

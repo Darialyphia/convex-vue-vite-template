@@ -15,7 +15,7 @@ export const useConvexAuth = () => {
   return useSafeInject(CONVEX_AUTH_INJECTION_KEY);
 };
 
-type QueryReference = FunctionReference<'query'>;
+export type QueryReference = FunctionReference<'query'>;
 export const useQuery = <Query extends QueryReference>(
   query: Query,
   ...args: OptionalRestArgs<Query>
@@ -48,14 +48,18 @@ export const useSuspenseQuery = <Query extends QueryReference>(
   const queryReference =
     typeof query === 'string' ? makeFunctionReference<'query', any, any>(query) : query;
 
-  return new Promise<Ref<Query['_returnType']>>(res => {
+  return new Promise<Ref<Query['_returnType']>>((res, rej) => {
     const { onUpdate, localQueryResult } = convex.watchQuery(queryReference, ...args);
     const data = ref(localQueryResult());
 
     const unsub = onUpdate(() => {
-      const newVal = localQueryResult();
-      data.value = newVal;
-      res(data);
+      try {
+        const newVal = localQueryResult();
+        data.value = newVal;
+        res(data);
+      } catch (err) {
+        rej(err);
+      }
     });
     if (data.value) res(data);
 
@@ -63,7 +67,7 @@ export const useSuspenseQuery = <Query extends QueryReference>(
   });
 };
 
-type MutationReference = FunctionReference<'mutation'>;
+export type MutationReference = FunctionReference<'mutation'>;
 export function useMutation<Mutation extends MutationReference>(
   mutation: Mutation,
   { optimisticUpdate }: { optimisticUpdate?: OptimisticUpdate<Mutation['_args']> } = {}
@@ -92,7 +96,7 @@ export function useMutation<Mutation extends MutationReference>(
   };
 }
 
-type ActionReference = FunctionReference<'action'>;
+export type ActionReference = FunctionReference<'action'>;
 export function useAction<Action extends ActionReference>(action: Action) {
   const convex = useConvex();
 

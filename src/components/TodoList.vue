@@ -1,41 +1,19 @@
 <script setup lang="ts">
-import { api } from '@/api';
-
-const todos = await useSuspenseQuery(api.todos.list);
-const { isLoading: isRemoving, mutate: removeTodo } = useMutation(api.todos.remove);
-const { mutate: setCompleted } = useMutation(api.todos.setCompleted);
+const seed = ref(0);
 </script>
 
 <template>
-  <p v-if="!todos.length">No todos yet !</p>
+  <Query :query="api => api.todos.list" :args="{ seed: seed }" @error="seed++">
+    <template #loading>
+      <p>Loading todos...</p>
+    </template>
 
-  <ul v-auto-animate>
-    <li v-for="todo in todos" :key="todo._id">
-      <input
-        v-model="todo.completed"
-        type="checkbox"
-        @change="setCompleted({ id: todo._id, completed: todo.completed })"
-      />
-      {{ todo.text }}
-      <UiIconButton
-        icon="mdi:close"
-        title="remove todo"
-        style="--button-color: var(--error)"
-        :disabled="isRemoving"
-        @click="removeTodo({ id: todo._id })"
-      />
-    </li>
-  </ul>
+    <template #default="{ data: todos }">
+      <p v-if="!todos.length">No todos yet !</p>
+
+      <div v-auto-animate class="geis gap-1">
+        <Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
+      </div>
+    </template>
+  </Query>
 </template>
-
-<style scoped lang="postcss">
-li {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-
-  &:has(input:checked) {
-    text-decoration: line-through;
-  }
-}
-</style>

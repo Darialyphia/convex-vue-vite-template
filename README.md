@@ -19,7 +19,12 @@ Everything should be setup to work properly.
   - `useAction`
   - `useConvex`: if you need to use the ConvexVueClient cirectly
   - `useConvexAuth`: if you used the `auth0` option in the plugin, it will return you the loading and authenticated state. For additional auth utilities like login, logout, user etc, please use `useAuth0` from `@auth0/auth0-vue`
+- Utilitiy components have also been made :
   - `<EnsureAuthenticated />` helper component to display things only when the user is logged in. Takes a `loading` and `fallback` slots. The default slot receives the connected user object as slot props
+  - `<Query />` component that takes a `query` prop which accepts a function taking your convex api as a parameter, and should return a query, and an `arg` prop for the query args. It'll handle loading and error states for you, and provides the following slots
+    - default: displays the query results. Exposes the query data as [slot props](https://vuejs.org/guide/components/slots.html#scoped-slots)
+    - loading: self explanatory
+    - error: self explanatory. Exposes the error message as slot props, as well as a `clearError` to clear the error boundary and retry.
 
 This branch adds a lot of other stuff for better DX and overall more batteries included
 

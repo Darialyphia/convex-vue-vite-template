@@ -1,9 +1,16 @@
 <script setup lang="ts">
 const { loginWithRedirect, user, logout } = useAuth0();
 
-const { isAuthenticated } = useConvexAuth();
+const { isAuthenticated, isLoading } = useConvexAuth();
 
 const location = window.location;
+
+const isReady = ref(false);
+until(isLoading)
+  .not.toBe(true)
+  .then(() => {
+    isReady.value = true;
+  });
 </script>
 <template>
   <header class="container">
@@ -30,7 +37,13 @@ const location = window.location;
 
     <DarkModeToggle />
   </header>
-  <RouterView v-slot="{ Component }">
+
+  <main v-if="!isReady" class="center surface">
+    <p>Authenticating...</p>
+    <UiSpinner size="xl" />
+  </main>
+
+  <RouterView v-else v-slot="{ Component }">
     <template v-if="Component">
       <Suspense>
         <component :is="Component"></component>
