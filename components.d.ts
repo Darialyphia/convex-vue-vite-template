@@ -8,10 +8,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
-    EnsureAuthenticated: typeof import('./src/components/EnsureAuthenticated.vue')['default']
+    EnsureAuthenticated: typeof import('./src/components/convex/EnsureAuthenticated.vue')['default']
+    Query: typeof import('./src/components/convex/Query.vue')['default']
+    QueryInner: typeof import('./src/components/convex/QueryInner.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Todo: typeof import('./src/components/Todo.vue')['default']
     TodoList: typeof import('./src/components/TodoList.vue')['default']
+    TodoListPaginated: typeof import('./src/components/TodoListPaginated.vue')['default']
     UiButton: typeof import('./src/components/ui/buttons/UiButton.vue')['default']
     UiButtonBase: typeof import('./src/components/ui/buttons/UiButtonBase.vue')['default']
     UiCheckbox: typeof import('./src/components/ui/inputs/UiCheckbox.vue')['default']

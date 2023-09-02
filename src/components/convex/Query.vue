@@ -33,17 +33,15 @@ const anyArgs = computed(() => [args] as any);
   <slot v-if="error" name="error" v-bind="{ error, clearError }">
     <div class="center gap-3">
       Looks like something went wrong.
-      <pre class="p-3 bg-surface-2">{{ error }}</pre>
-      <UiButton @click="clearError">Retry</UiButton>
+      <pre>{{ error }}</pre>
+      <button @click="clearError">Retry</button>
     </div>
   </slot>
 
   <Suspense v-else>
     <template #fallback>
       <slot name="loading">
-        <div class="center">
-          <UiSpinner />
-        </div>
+        <div>Loading...</div>
       </slot>
     </template>
 
