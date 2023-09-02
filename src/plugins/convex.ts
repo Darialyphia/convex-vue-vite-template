@@ -1,12 +1,4 @@
-import {
-  ref,
-  watchEffect,
-  readonly,
-  type InjectionKey,
-  type Plugin,
-  type Ref
-} from 'vue';
-import { until } from '@vueuse/core';
+import type { App, InjectionKey, Plugin, Ref } from 'vue';
 import type { Router } from 'vue-router/auto';
 import type { RouteLocationNormalized } from 'vue-router/auto';
 import type { RouteLocationRaw } from 'vue-router/auto';
@@ -14,9 +6,10 @@ import {
   BaseConvexClient,
   type QueryToken,
   type ClientOptions,
-  type OptimisticUpdate
+  type OptimisticUpdate,
+  type QueryJournal
 } from 'convex/browser';
-import type { AuthTokenFetcher, Watch, WatchQueryOptions } from 'convex/react';
+import type { AuthTokenFetcher } from 'convex/react';
 import {
   getFunctionName,
   type ArgsAndOptions,
@@ -38,6 +31,17 @@ export type ConnectionState = {
 
 export interface MutationOptions<Args extends Record<string, Value>> {
   optimisticUpdate?: OptimisticUpdate<Args>;
+}
+
+export interface Watch<T> {
+  onUpdate(callback: () => void): () => void;
+  localQueryResult(): T | undefined;
+  localQueryLogs(): string[] | undefined;
+  journal(): QueryJournal | undefined;
+}
+
+export interface WatchQueryOptions {
+  journal?: QueryJournal;
 }
 
 export class ConvexVueClient {
@@ -160,7 +164,6 @@ export class ConvexVueClient {
         return undefined;
       },
 
-      // @ts-ignore internal deez nuts
       localQueryLogs: () => {
         if (this.cachedSync) {
           // @ts-ignore internal deez nuts
@@ -216,17 +219,8 @@ export class ConvexVueClient {
     return this.sync.connectionState();
   }
 
-  /**
-   * Close any network handles associated with this client and stop all subscriptions.
-   *
-   * Call this method when you're done with a {@link ConvexReactClient} to
-   * dispose of its sockets and resources.
-   *
-   * @returns A `Promise` fulfilled when the connection has been completely closed.
-   */
   async close(): Promise<void> {
     this.closed = true;
-    // Prevent outstanding React batched updates from invoking listeners.
     this.listeners = new Map();
     if (this.cachedSync) {
       const sync = this.cachedSync;
@@ -280,7 +274,6 @@ export const CONVEX_AUTH_INJECTION_KEY = Symbol(
 const installNavigationGuard = (
   authState: ConvexAuthState,
   router: Router,
-  route: RouteLocationNormalized,
   {
     needsAuth,
     redirectTo
@@ -290,13 +283,66 @@ const installNavigationGuard = (
     if (!needsAuth(to, from)) return next();
 
     await until(authState.isLoading).not.toBe(true);
-    console.log(authState.isLoading.value, authState.isAuthenticated.value);
     if (!authState.isAuthenticated.value) {
       return next(redirectTo(to, from));
     }
 
     next();
   });
+};
+
+const setupAuth0 = (app: App, convex: ConvexVueClient, options: Auth0Options) => {
+  const { isAuthenticated, isLoading, getAccessTokenSilently } =
+    app.config.globalProperties.$auth0;
+
+  const isConvexAuthenticated = ref(false);
+  const isConvexAuthLoading = ref(isLoading.value);
+
+  const fetchAccessToken = async ({
+    forceRefreshToken
+  }: {
+    forceRefreshToken: boolean;
+  }) => {
+    try {
+      const response = await getAccessTokenSilently({
+        detailedResponse: true,
+        cacheMode: forceRefreshToken ? 'off' : 'on'
+      });
+      return response.id_token as string;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const syncConvexAuthWithAuth0Auth = () => {
+    if (!isConvexAuthLoading.value && isLoading.value) {
+      isConvexAuthLoading.value = true;
+    }
+
+    if (isLoading.value) return;
+    if (isAuthenticated.value) {
+      convex.setAuth(fetchAccessToken, isAuth => {
+        isConvexAuthenticated.value = isAuth;
+        isConvexAuthLoading.value = false;
+      });
+    } else {
+      convex.clearAuth();
+      isConvexAuthenticated.value = false;
+      isConvexAuthLoading.value = false;
+    }
+  };
+
+  watchEffect(syncConvexAuthWithAuth0Auth);
+
+  const authState = {
+    isLoading: readonly(isConvexAuthLoading),
+    isAuthenticated: readonly(isConvexAuthenticated)
+  };
+  app.provide(CONVEX_AUTH_INJECTION_KEY, authState);
+
+  if (options.installNavigationGuard) {
+    installNavigationGuard(authState, app.config.globalProperties.$router, options);
+  }
 };
 
 export const createConvex = (
@@ -307,62 +353,8 @@ export const createConvex = (
     const convex = new ConvexVueClient(origin);
     app.provide(CONVEX_INJECTION_KEY, convex);
 
-    if (!options.auth0) return;
-    const { isAuthenticated, isLoading, getAccessTokenSilently } =
-      app.config.globalProperties.$auth0;
-    const isConvexAuthenticated = ref(false);
-    const isConvexAuthLoading = ref(isLoading.value);
-
-    const fetchAccessToken = async ({
-      forceRefreshToken
-    }: {
-      forceRefreshToken: boolean;
-    }) => {
-      try {
-        const response = await getAccessTokenSilently({
-          detailedResponse: true,
-          cacheMode: forceRefreshToken ? 'off' : 'on'
-        });
-        return response.id_token as string;
-      } catch (error) {
-        return null;
-      }
-    };
-
-    watchEffect(() => {
-      if (isLoading.value) return;
-
-      if (isAuthenticated.value) {
-        convex.setAuth(fetchAccessToken, isAuth => {
-          isConvexAuthenticated.value = isAuth;
-          isConvexAuthLoading.value = false;
-        });
-      } else {
-        convex.clearAuth();
-        isConvexAuthenticated.value = false;
-        isConvexAuthLoading.value = false;
-      }
-    });
-
-    watchEffect(() => {
-      if (!isConvexAuthLoading.value && isLoading.value) {
-        isConvexAuthLoading.value = true;
-      }
-    });
-
-    const authState = {
-      isLoading: readonly(isConvexAuthLoading),
-      isAuthenticated: readonly(isConvexAuthenticated)
-    };
-    app.provide(CONVEX_AUTH_INJECTION_KEY, authState);
-
-    if (options.auth0.installNavigationGuard) {
-      installNavigationGuard(
-        authState,
-        app.config.globalProperties.$router,
-        app.config.globalProperties.$route,
-        options.auth0
-      );
+    if (options.auth0) {
+      setupAuth0(app, convex, options.auth0);
     }
   }
 });
