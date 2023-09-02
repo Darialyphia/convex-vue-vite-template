@@ -46,7 +46,9 @@ const tag = computed(() => {
       aria-hidden="true"
     />
 
-    <slot />
+    <UiSpinner v-if="props.isLoading" />
+    <slot v-else />
+
     <UiIcon
       v-if="props.rightIcon && !props.isLoading"
       :icon="props.rightIcon"
@@ -81,12 +83,9 @@ const tag = computed(() => {
   border: solid var(--border-size-1) var(--button-border-color);
   border-radius: var(--button-radius);
 
-  &:where(:disabled) {
-    cursor: not-allowed;
-
-    &:not(.is-loading) {
-      background-color: var(--disabled);
-    }
+  &:disabled:not(.is-loading) {
+    --button-color: var(--text-on-disabled);
+    --button-bg: var(--disabled);
   }
 
   .is-loading {

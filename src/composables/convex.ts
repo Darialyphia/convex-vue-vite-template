@@ -71,8 +71,18 @@ export function useMutation<Mutation extends MutationReference>(mutation: Mutati
       ? makeFunctionReference<'mutation', any, any>(mutation)
       : mutation;
 
-  return (args?: Mutation['_args']): Promise<Mutation['_returnType']> => {
-    return convex.mutation(mutationReference, args, {});
+  const isLoading = ref(false);
+
+  return {
+    isLoading,
+    mutate: async (args?: Mutation['_args']): Promise<Mutation['_returnType']> => {
+      try {
+        isLoading.value = true;
+        return await convex.mutation(mutationReference, args, {});
+      } finally {
+        isLoading.value = false;
+      }
+    }
   };
 }
 
@@ -85,7 +95,17 @@ export function useAction<Action extends ActionReference>(action: Action) {
       ? makeFunctionReference<'action', any, any>(action)
       : action;
 
-  return (args?: Action['_args']): Promise<Action['_returnType']> => {
-    return convex.action(actionReference, args);
+  const isLoading = ref(false);
+
+  return {
+    isLoading,
+    execute: async (args?: Action['_args']): Promise<Action['_returnType']> => {
+      try {
+        isLoading.value = true;
+        return await convex.action(actionReference, args);
+      } finally {
+        isLoading.value = false;
+      }
+    }
   };
 }

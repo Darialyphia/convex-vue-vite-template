@@ -23,6 +23,7 @@ declare module 'vue' {
     UiIcon: typeof import('./src/components/ui/UiIcon.vue')['default']
     UiIconButton: typeof import('./src/components/ui/buttons/UiIconButton.vue')['default']
     UiLinkButton: typeof import('./src/components/ui/buttons/UiLinkButton.vue')['default']
+    UiSpinner: typeof import('./src/components/ui/UiSpinner.vue')['default']
     UiSwitch: typeof import('./src/components/ui/inputs/UiSwitch.vue')['default']
     UiTextInput: typeof import('./src/components/ui/inputs/UiTextInput.vue')['default']
   }

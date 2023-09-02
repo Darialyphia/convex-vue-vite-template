@@ -3,7 +3,7 @@ import { api } from '@/api';
 import { toTypedSchema } from '@vee-validate/zod';
 import { object, string } from 'zod';
 
-const addTodo = useMutation(api.todos.add);
+const { isLoading, mutate: addTodo } = useMutation(api.todos.add);
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: toTypedSchema(
@@ -17,6 +17,8 @@ const onSubmit = handleSubmit(async values => {
   await addTodo(values);
   resetForm();
 });
+
+const { isAuthenticated } = useConvexAuth();
 </script>
 
 <template>
@@ -27,6 +29,6 @@ const onSubmit = handleSubmit(async values => {
       <UiFormError :error="error" :is-always-visible="false" />
     </UiFormControl>
 
-    <UiButton>Add todo</UiButton>
+    <UiButton :disabled="!isAuthenticated" :is-loading="isLoading">Add todo</UiButton>
   </form>
 </template>

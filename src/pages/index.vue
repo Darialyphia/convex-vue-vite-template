@@ -8,15 +8,19 @@ const { isAuthenticated, isLoading } = useConvexAuth();
 </script>
 
 <template>
-  <main v-if="!isAuthenticated" class="container">
-    You must be logged in to see your todos
-    <UiButton :is-loading="isLoading" @click="loginWithRedirect">Login</UiButton>
-  </main>
-
-  <main v-else class="container space-y-3">
+  <main class="container space-y-3">
     <section class="surface">
       <Suspense>
-        <TodoList />
+        <div v-if="isLoading" class="center">
+          <UiSpinner size="lg" />
+        </div>
+
+        <div v-else-if="!isAuthenticated">
+          You must be logged in to see your todos
+          <UiButton :is-loading="isLoading" @click="loginWithRedirect">Login</UiButton>
+        </div>
+
+        <TodoList v-else />
         <template #fallback><p>Loading todos...</p></template>
       </Suspense>
     </section>

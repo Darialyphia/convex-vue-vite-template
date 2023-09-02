@@ -2,8 +2,8 @@
 import { api } from '@/api';
 
 const todos = await useSuspenseQuery(api.todos.list);
-const removeTodo = useMutation(api.todos.remove);
-const setCompleted = useMutation(api.todos.setCompleted);
+const { isLoading: isRemoving, mutate: removeTodo } = useMutation(api.todos.remove);
+const { mutate: setCompleted } = useMutation(api.todos.setCompleted);
 </script>
 
 <template>
@@ -21,6 +21,7 @@ const setCompleted = useMutation(api.todos.setCompleted);
         icon="mdi:close"
         title="remove todo"
         style="--button-color: var(--error)"
+        :disabled="isRemoving"
         @click="removeTodo({ id: todo._id })"
       />
     </li>
