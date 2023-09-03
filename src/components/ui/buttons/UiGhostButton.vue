@@ -3,10 +3,9 @@ import type { ThemeProps } from '@/composables/useStyles';
 import type { ButtonBaseThemeKeys, ButtonProps } from './UiButtonBase.vue';
 
 type ButtonExtraKeys = 'bg' | 'color' | 'hoverColor' | 'hoverBg';
+export type ButtonGhostThemeKeys = ButtonBaseThemeKeys | ButtonExtraKeys;
 
-const { theme, ...props } = defineProps<
-  ButtonProps & ThemeProps<ButtonBaseThemeKeys | ButtonExtraKeys>
->();
+const { theme, ...props } = defineProps<ButtonProps & ThemeProps<ButtonGhostThemeKeys>>();
 
 const defaultStyles = {
   color: '[inherit]',

@@ -39,7 +39,7 @@ const styles = useStyles(
       color: 'text-1',
       radius: 'radius-2',
       size: 'font-size-1',
-      weight: 'weight-6',
+      weight: 'font-weight-6',
       borderColor: 'transparent'
     }
   },
@@ -79,11 +79,6 @@ const tag = computed(() => {
 <style scoped lang="postcss">
 @layer components {
   .ui-button-base {
-    --_button-weight: v-bind('styles.weight');
-    --_button-bg: v-bind('styles.bg');
-    --_button-color: v-bind('styles.color');
-    --_button-border-color: v-bind('styles.borderColor');
-
     display: flex;
     gap: var(--size-2);
     align-items: center;

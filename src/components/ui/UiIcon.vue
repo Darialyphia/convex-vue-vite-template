@@ -1,22 +1,30 @@
 <script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
 import { Icon } from '@iconify/vue';
 
-const {
-  icon,
-  inline,
-  size = 'md'
-} = defineProps<{
-  icon: string;
-  inline?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
-}>();
+const { icon, inline, theme } = defineProps<
+  ThemeProps<'size'> & {
+    icon: string;
+    inline?: boolean;
+  }
+>();
+
+const styles = useStyles(
+  {
+    prefix: 'icon',
+    config: {
+      size: 'font-size-3'
+    }
+  },
+  () => theme
+);
 </script>
 
 <template>
   <Icon
     :icon="icon"
     class="ui-icon"
-    :class="[size, { 'ui-icon--inline': inline }]"
+    :class="{ 'ui-icon--inline': inline }"
     :inline="inline"
   />
 </template>
@@ -28,10 +36,8 @@ const {
   }
 
   .ui-icon {
-    --_icon-size: var(--icon-size, var(--font-size-3));
-
     flex-shrink: 0;
-    font-size: var(--_icon-size);
+    font-size: v-bind('styles.size');
   }
 }
 </style>

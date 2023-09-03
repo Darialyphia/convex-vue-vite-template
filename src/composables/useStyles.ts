@@ -9,9 +9,14 @@ export type ThemeProps<TKeys extends string> = {
 type WithThemeProps<TObj extends AnyObject, TKeys extends string> = TObj &
   ThemeProps<TKeys>;
 
-const rawValueRE = new RegExp('^[(.+)]$');
+const rawValueRE = /^\[([^\]]+)]$/; // matches content in brackets, ie: [#123456]
 
-const transformValue = (val: string) => (rawValueRE.test(val) ? val : `var(--${val})`);
+const transformValue = (val: string) => {
+  return rawValueRE.test(val)
+    ? val.replace(/^\[/, '').replace(/]$/, '')
+    : `var(--${val})`;
+};
+
 export const useStyles = <T extends string>(
   {
     config,

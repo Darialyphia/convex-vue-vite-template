@@ -33,9 +33,9 @@ const isMenuOpened = ref(false);
             </UiLinkButton>
           </RouterLink>
         </span>
-        <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
+        <UiGhostButton @click="logout({ logoutParams: { returnTo: location.origin } })">
           Log out
-        </UiButton>
+        </UiGhostButton>
       </template>
       <DarkModeToggle />
     </MenuContent.define>
