@@ -88,7 +88,7 @@ watchEffect(() => {
 <style scoped lang="postcss">
 @layer components {
   .ui-input-text {
-    --_input-size: var(--input-size, var(--font-size-3));
+    --_input-size: var(--input-size, var(--font-size-1));
 
     overflow: hidden;
     display: grid;

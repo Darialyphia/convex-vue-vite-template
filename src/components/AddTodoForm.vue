@@ -17,13 +17,14 @@ const { handleSubmit, resetForm } = useForm({
 const onSubmit = handleSubmit(async values => {
   await addTodo(values);
   resetForm();
+  focus('todo-form');
 });
 
 const { isAuthenticated } = useConvexAuth();
 
 const focus = useFocusOn();
 onMounted(() => {
-  focus('foo');
+  focus('todo-form');
 });
 </script>
 
@@ -31,7 +32,7 @@ onMounted(() => {
   <form @submit.prevent="onSubmit">
     <UiFormControl v-slot="{ error, inputProps }" name="text" class="max-w-sm space-y-2">
       <UiFormLabel for="text">What needs to be done ?</UiFormLabel>
-      <UiTextInput v-bind="inputProps" id="text" v-focus-on="'foo'" />
+      <UiTextInput v-bind="inputProps" id="text" v-focus-on="'todo-form'" />
       <UiFormError :error="error" :is-always-visible="false" />
     </UiFormControl>
 
