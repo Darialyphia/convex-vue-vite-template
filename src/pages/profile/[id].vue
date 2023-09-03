@@ -16,13 +16,12 @@ const isModalOpened = ref(false);
 
     <pre>{{ user }}</pre>
 
-    <UiModal id="test-modal" v-model:is-opened="isModalOpened">
+    <UiSimpleModal id="test-modal" v-model:is-opened="isModalOpened" title="Test Modal">
       <template #trigger="triggerProps">
         <UiButton v-bind="triggerProps">Toggle modal</UiButton>
       </template>
-      <UiModalHeader>Test Modal</UiModalHeader>
 
-      <UiModalContent>The content of the modal</UiModalContent>
-    </UiModal>
+      The content of the modal
+    </UiSimpleModal>
   </main>
 </template>

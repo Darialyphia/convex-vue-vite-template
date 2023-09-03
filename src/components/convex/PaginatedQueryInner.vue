@@ -18,7 +18,10 @@ const {
   loadMore
 } = usePaginatedQuery(query(api), args, { initialNumItems: numItems });
 
-const slots = useSlots();
+const canLoadMore = computed(() => status.value === 'CanLoadMore');
+const isLoadingMore = computed(() => status.value === 'LoadingMore');
+const isDone = computed(() => status.value === 'Exhausted');
+const isEmpty = computed(() => !isLoading.value && !data.value.length);
 </script>
 
 <template>
@@ -26,7 +29,7 @@ const slots = useSlots();
     v-if="isLoading && status === 'LoadingFirstPage'"
     name="loading"
     :status="status"
-    :load-more="(num: number = numItems) => loadMore(num)"
+    :is-loading-more="isLoadingMore"
   >
     <div class="center">
       loading slot
@@ -38,6 +41,10 @@ const slots = useSlots();
     v-else
     :data="data"
     :status="status"
+    :is-loading-more="isLoadingMore"
+    :can-load-more="canLoadMore"
+    :is-done="isDone"
+    :is-empty="isEmpty"
     :load-more="(num: number = numItems) => loadMore(num)"
   />
 </template>

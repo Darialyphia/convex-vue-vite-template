@@ -28,8 +28,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <form class="space-y-2" @submit.prevent="onSubmit">
-    <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm">
+  <form @submit.prevent="onSubmit">
+    <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm space-y-2">
       <UiFormLabel for="text">What needs to be done ?</UiFormLabel>
       <UiTextInput v-bind="inputProps" id="text" v-focus-on="'foo'" />
       <UiFormError :error="error" :is-always-visible="false" />

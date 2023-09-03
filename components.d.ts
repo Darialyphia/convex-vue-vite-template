@@ -39,6 +39,7 @@ declare module 'vue' {
     UiModal: typeof import('./src/components/ui/modal/UiModal.vue')['default']
     UiModalContent: typeof import('./src/components/ui/modal/UiModalContent.vue')['default']
     UiModalHeader: typeof import('./src/components/ui/modal/UiModalHeader.vue')['default']
+    UiSimpleModal: typeof import('./src/components/ui/modal/UiSimpleModal.vue')['default']
     UiSpinner: typeof import('./src/components/ui/UiSpinner.vue')['default']
     UiSwitch: typeof import('./src/components/ui/inputs/UiSwitch.vue')['default']
     UiTextInput: typeof import('./src/components/ui/inputs/UiTextInput.vue')['default']
