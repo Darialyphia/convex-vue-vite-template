@@ -8,6 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
+    ArkDialog: typeof import('@ark-ui/vue')['Dialog']
+    ArkDialogBackdrop: typeof import('@ark-ui/vue')['DialogBackdrop']
+    ArkDialogCloseTrigger: typeof import('@ark-ui/vue')['DialogCloseTrigger']
+    ArkDialogContainer: typeof import('@ark-ui/vue')['DialogContainer']
+    ArkDialogContent: typeof import('@ark-ui/vue')['DialogContent']
+    ArkDialogDescription: typeof import('@ark-ui/vue')['DialogDescription']
+    ArkDialogTitle: typeof import('@ark-ui/vue')['DialogTitle']
     DarkModeToggle: typeof import('./src/components/DarkModeToggle.vue')['default']
     EnsureAuthenticated: typeof import('./src/components/convex/EnsureAuthenticated.vue')['default']
     PaginatedQuery: typeof import('./src/components/convex/PaginatedQuery.vue')['default']
@@ -29,6 +36,9 @@ declare module 'vue' {
     UiIcon: typeof import('./src/components/ui/UiIcon.vue')['default']
     UiIconButton: typeof import('./src/components/ui/buttons/UiIconButton.vue')['default']
     UiLinkButton: typeof import('./src/components/ui/buttons/UiLinkButton.vue')['default']
+    UiModal: typeof import('./src/components/ui/modal/UiModal.vue')['default']
+    UiModalContent: typeof import('./src/components/ui/modal/UiModalContent.vue')['default']
+    UiModalHeader: typeof import('./src/components/ui/modal/UiModalHeader.vue')['default']
     UiSpinner: typeof import('./src/components/ui/UiSpinner.vue')['default']
     UiSwitch: typeof import('./src/components/ui/inputs/UiSwitch.vue')['default']
     UiTextInput: typeof import('./src/components/ui/inputs/UiTextInput.vue')['default']
