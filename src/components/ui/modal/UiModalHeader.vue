@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
+
+const { theme } = defineProps<ThemeProps<'bg' | 'color' | 'size' | 'weight'>>();
+
+const styles = useStyles(
+  {
+    config: {
+      bg: '[inherit]',
+      color: '[inherit]',
+      size: 'font-size-5',
+      weight: 'font-weight-5'
+    },
+    prefix: 'header'
+  },
+  () => theme
+);
+</script>
+
 <template>
   <ArkDialogTitle as-child>
     <header>
@@ -12,11 +31,6 @@
 <style scoped lang="postcss">
 @layer components {
   header {
-    --_header-bg: var(--header-bg, inherit);
-    --_header-color: var(--header-color, inherit);
-    --_header-size: var(--header-size, var(--font-size-5));
-    --_header-weight: var(--header-weight, var(--font-weight-5));
-
     position: sticky;
     top: 0;
 
@@ -25,11 +39,11 @@
 
     padding: var(--size-4) var(--size-5);
 
-    font-size: var(--_header-size);
-    font-weight: var(--_header-weight);
-    color: var(--_header-color);
+    font-size: v-bind('styles.size');
+    font-weight: v-bind('styles.weight');
+    color: v-bind('styles.color');
 
-    background-color: var(--_header-bg);
+    background-color: v-bind('styles.bg');
 
     > h2 {
       font-size: inherit;

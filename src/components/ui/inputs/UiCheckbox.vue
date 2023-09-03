@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
 import type { Nullable } from '@/utils/types';
 
 const modelValue = defineModel<Nullable<boolean>>({ required: true });
@@ -7,9 +8,23 @@ defineSlots<{
   default(props: { value: Nullable<boolean> }): any;
 }>();
 
-const { id } = defineProps<{
-  id: string;
-}>();
+const { id, theme } = defineProps<
+  ThemeProps<'size' | 'color' | 'labelColor'> & {
+    id: string;
+  }
+>();
+
+const styles = useStyles(
+  {
+    config: {
+      color: '[inherit]',
+      size: 'font-size-3',
+      labelColor: '[inherit]'
+    },
+    prefix: 'checkbox'
+  },
+  () => theme
+);
 
 const vModel = computed({
   get() {
@@ -39,10 +54,6 @@ const vModel = computed({
 @layer components {
   [data-scope='checkbox'] {
     &[data-part='root'] {
-      --_checkbox-size: var(--checkbox-size, var(--font-size-3));
-      --_checkbox-color: var(--checkbox-color, inherit);
-      --_checkbox-label-color: var(--checkbox-label-color, inherit);
-
       display: flex;
       gap: var(--size-1);
       align-items: center;
@@ -56,14 +67,14 @@ const vModel = computed({
     }
 
     &[data-part='control'] {
-      font-size: var(--_checkbox-size);
-      color: var(
-        --_checkbox-color
+      font-size: v-bind('styles.size');
+      color: v-bind(
+        'styles.color'
       ) !important; /* need overrides uno icon class in the utilities layer */
     }
 
     &[data-part='label'] {
-      color: var(--_checkbox-label-color);
+      color: v-bind('styles.labelColor');
     }
   }
 }

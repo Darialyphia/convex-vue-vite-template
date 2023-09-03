@@ -1,13 +1,9 @@
 <script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
 import type { Nullable } from '@/utils/types';
 import { omit, pick } from 'lodash-es';
 
-defineOptions({
-  name: 'UiTextInput',
-  inheritAttrs: false
-});
-
-type Props = {
+type Props = ThemeProps<'size'> & {
   modelValue: Nullable<string | number>;
   name?: string;
   type?: string;
@@ -24,12 +20,23 @@ const {
   leftIcon,
   rightIcon,
   name,
-  debouncedTimeout = 0
+  debouncedTimeout = 0,
+  theme
 } = defineProps<Props>();
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void;
 }>();
+
+const styles = useStyles(
+  {
+    config: {
+      size: 'font-size-1'
+    },
+    prefix: 'input'
+  },
+  () => theme
+);
 
 const slots = useSlots();
 
@@ -88,15 +95,13 @@ watchEffect(() => {
 <style scoped lang="postcss">
 @layer components {
   .ui-input-text {
-    --_input-size: var(--input-size, var(--font-size-1));
-
     overflow: hidden;
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: var(--size-1);
     align-items: center;
 
-    font-size: var(--_input-size);
+    font-size: v-bind('styles.size');
 
     background-color: var(--surface-2);
     border: solid 1px var(--border-dimmed);

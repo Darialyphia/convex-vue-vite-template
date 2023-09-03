@@ -1,10 +1,28 @@
 <script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
 import type { Nullable } from '@/utils/types';
 
-const { error, isAlwaysVisible = true } = defineProps<{
-  error?: Nullable<boolean | string>;
-  isAlwaysVisible?: boolean;
-}>();
+const {
+  error,
+  isAlwaysVisible = true,
+  theme
+} = defineProps<
+  ThemeProps<'bg' | 'color'> & {
+    error?: Nullable<boolean | string>;
+    isAlwaysVisible?: boolean;
+  }
+>();
+
+const styles = useStyles(
+  {
+    prefix: 'error',
+    config: {
+      bg: 'transparent',
+      color: 'error'
+    }
+  },
+  () => theme
+);
 </script>
 
 <template>
@@ -21,13 +39,10 @@ const { error, isAlwaysVisible = true } = defineProps<{
 <style scoped lang="postcss">
 @layer components {
   .ui-form-error {
-    --_error-bg: var(--error-bg, transparent);
-    --_error-color: var(--error-color, var(--error));
-
     gap: var(--size-2);
     min-height: v-bind('isAlwaysVisible ? "var(--size-5" : 0');
-    color: var(--_error-color);
-    background-color: var(--_error-bg);
+    color: v-bind('styles.color');
+    background-color: v-bind('styles.bg');
   }
 
   .v-enter-active,

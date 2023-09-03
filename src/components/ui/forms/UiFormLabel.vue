@@ -1,5 +1,19 @@
 <script setup lang="ts">
-const props = defineProps<{ for: string }>();
+import { type ThemeProps } from '@/composables/useStyles';
+
+const props = defineProps<ThemeProps<'weight' | 'color' | 'size'> & { for: string }>();
+
+const styles = useStyles(
+  {
+    config: {
+      color: '[inherit]',
+      size: '[inherit]',
+      weight: 'font-weight-5'
+    },
+    prefix: 'label'
+  },
+  () => props.theme
+);
 </script>
 
 <template>
@@ -11,13 +25,9 @@ const props = defineProps<{ for: string }>();
 <style scoped>
 @layer components {
   label {
-    --_label-weight: var(--label-weight, var(--font-weight-5));
-    --_label-color: var(--label-color, inherit);
-    --_label-size: var(--label-size, inherit);
-
-    font-size: var(--_label-size);
-    font-weight: var(--_label-weight);
-    color: var(--_label-color);
+    font-size: v-bind('styles.size');
+    font-weight: v-bind('styles.weight');
+    color: v-bind('styles.color');
   }
 }
 </style>
