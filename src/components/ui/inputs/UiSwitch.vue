@@ -1,6 +1,21 @@
 <script lang="ts" setup>
 import type { Nullable } from '@/utils/types';
+import { type ThemeProps } from '@/composables/useStyles';
 
+type Props = ThemeProps<'offColor' | 'onColor' | 'size'>;
+const { theme } = defineProps<Props>();
+
+const styles = useStyles(
+  {
+    config: {
+      offColor: 'gray-6',
+      onColor: 'primary',
+      size: 'size-4'
+    },
+    prefix: 'switch'
+  },
+  () => theme
+);
 const modelValue = defineModel<Nullable<boolean>>({ required: true });
 
 const toggle = () => {
@@ -19,11 +34,11 @@ const toggle = () => {
 <style scoped lang="postcss">
 @layer components {
   .ui-input-switch {
-    --off-color: var(--gray-6);
-    --on-color: var(--primary);
-    --size: var(--size-4);
-    --_switch-color: var(--off-color);
-    --_switch-position: 0;
+    --_off-color: v-bind('styles.offColor');
+    --_on-color: v-bind('styles.onColor');
+    --_size: v-bind('styles.size');
+    --_color: var(--_off-color);
+    --_position: 0;
 
     display: flex;
     gap: var(--size-1);
@@ -38,8 +53,8 @@ const toggle = () => {
     & button {
       position: relative;
 
-      width: calc(var(--size) * 2);
-      height: var(--size);
+      width: calc(var(--_size) * 2);
+      height: var(--_size);
       padding-inline: var(--size-1);
 
       background: var(--surface-1);
@@ -51,12 +66,12 @@ const toggle = () => {
 
         position: absolute;
         top: -1px;
-        left: var(--_switch-position);
+        left: var(--_position);
 
         aspect-ratio: 1;
-        height: var(--size);
+        height: var(--_size);
 
-        background-color: var(--_switch-color);
+        background-color: var(--_color);
         border-radius: var(--radius-pill);
 
         transition:
@@ -66,8 +81,8 @@ const toggle = () => {
     }
 
     &.is-on button {
-      --_switch-color: var(--on-color);
-      --_switch-position: calc(100% - var(--size));
+      --_color: var(--_on-color);
+      --_position: calc(100% - var(--_size));
     }
   }
 }

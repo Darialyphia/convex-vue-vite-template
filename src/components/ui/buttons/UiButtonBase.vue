@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import type { ThemeProps } from '@/composables/useStyles';
 import type { RouterLinkProps } from 'vue-router/auto';
 import { RouterLink } from 'vue-router/auto';
 
-export type ButtonProps = {
+export type ButtonBaseThemeKeys =
+  | 'radius'
+  | 'size'
+  | 'weight'
+  | 'bg'
+  | 'color'
+  | 'borderColor';
+export type ButtonTheme = ThemeProps<ButtonBaseThemeKeys>;
+
+export type ButtonProps = ButtonTheme & {
   isLoading?: boolean;
   leftIcon?: string;
   rightIcon?: string;
@@ -11,17 +21,34 @@ export type ButtonProps = {
   to?: RouterLinkProps['to'];
 };
 
-const props = withDefaults(defineProps<ButtonProps>(), {
-  leftIcon: undefined,
-  rightIcon: undefined,
-  isLoading: false,
-  to: undefined
-});
+const {
+  isLoading = false,
+  leftIcon,
+  rightIcon,
+  isInline,
+  isCta,
+  to,
+  theme
+} = defineProps<ButtonProps>();
 
+const styles = useStyles(
+  {
+    prefix: 'button',
+    config: {
+      bg: 'transparent',
+      color: 'text-1',
+      radius: 'radius-2',
+      size: 'font-size-1',
+      weight: 'weight-6',
+      borderColor: 'transparent'
+    }
+  },
+  () => theme
+);
 const attrs = useAttrs();
 
 const tag = computed(() => {
-  if (props.to) return RouterLink;
+  if (to) return RouterLink;
   if (attrs.href) return 'a';
 
   return 'button';
@@ -31,41 +58,31 @@ const tag = computed(() => {
 <template>
   <component
     :is="tag"
-    :to="props.to"
+    :to="to"
     class="ui-button-base"
     :class="{
-      'is-inline': props.isInline,
-      'is-cta': props.isCta,
-      'is-loading': props.isLoading
+      'is-inline': isInline,
+      'is-cta': isCta,
+      'is-loading': isLoading
     }"
-    :disabled="attrs.disabled || props.isLoading"
+    :disabled="attrs.disabled || isLoading"
   >
-    <UiIcon
-      v-if="props.leftIcon && !props.isLoading"
-      :icon="props.leftIcon"
-      aria-hidden="true"
-    />
+    <UiIcon v-if="leftIcon && !isLoading" :icon="leftIcon" aria-hidden="true" />
 
-    <UiSpinner v-if="props.isLoading" />
+    <UiSpinner v-if="isLoading" />
     <slot v-else />
 
-    <UiIcon
-      v-if="props.rightIcon && !props.isLoading"
-      :icon="props.rightIcon"
-      aria-hidden="true"
-    />
+    <UiIcon v-if="rightIcon && !isLoading" :icon="rightIcon" aria-hidden="true" />
   </component>
 </template>
 
 <style scoped lang="postcss">
 @layer components {
   .ui-button-base {
-    --_button-radius: var(--button-radius, var(--radius-2));
-    --_button-size: var(--button-size, var(--font-size-2));
-    --_button-weight: var(--button-weight, var(--font-weight-6));
-    --_button-bg: var(--button-bg, transparent);
-    --_button-color: var(--button-color, var(--text-1));
-    --_button-border-color: var(--button-border-color, var(--_button-bg));
+    --_button-weight: v-bind('styles.weight');
+    --_button-bg: v-bind('styles.bg');
+    --_button-color: v-bind('styles.color');
+    --_button-border-color: v-bind('styles.borderColor');
 
     display: flex;
     gap: var(--size-2);
@@ -74,17 +91,15 @@ const tag = computed(() => {
 
     padding: var(--size-2-em) var(--size-3-em);
 
-    font-size: var(--_button-size);
-    font-weight: var(--_button-weight);
-    color: var(--_button-color);
+    font-size: v-bind('styles.size');
+    font-weight: v-bind('styles.weight');
+    color: v-bind('styles.color');
     white-space: nowrap;
     vertical-align: middle;
 
-    background-color: var(--_button-bg);
-    border-color: var(--_button-border-color);
-    border-style: solid;
-    border-width: var(--border-size-1);
-    border-radius: var(--_button-radius);
+    background-color: v-bind('styles.bg');
+    border: solid var(--border-size-1) v-bind('styles.borderColor');
+    border-radius: v-bind('styles.radius');
 
     &:disabled:not(.is-loading) {
       --button-color: var(--text-on-disabled);

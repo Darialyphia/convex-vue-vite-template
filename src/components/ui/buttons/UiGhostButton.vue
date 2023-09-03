@@ -1,11 +1,35 @@
 <script setup lang="ts">
-import type { ButtonProps } from './UiButtonBase.vue';
+import type { ThemeProps } from '@/composables/useStyles';
+import type { ButtonBaseThemeKeys, ButtonProps } from './UiButtonBase.vue';
 
-const props = defineProps<ButtonProps>();
+type ButtonExtraKeys = 'bg' | 'color' | 'hoverColor' | 'hoverBg';
+
+const { theme, ...props } = defineProps<
+  ButtonProps & ThemeProps<ButtonBaseThemeKeys | ButtonExtraKeys>
+>();
+
+const defaultStyles = {
+  color: '[inherit]',
+  bg: 'transparent',
+  hoverBg: 'button-ghost-hover-bg',
+  hoverColor: '[inherit]'
+};
+
+const styles = useStyles<ButtonExtraKeys>(
+  {
+    config: defaultStyles,
+    prefix: 'button'
+  },
+  () => theme
+);
 </script>
 
 <template>
-  <UiButtonBase v-bind="props" class="ui-button-ghost">
+  <UiButtonBase
+    v-bind="props"
+    :theme="{ ...defaultStyles, ...theme }"
+    class="ui-button-ghost"
+  >
     <slot />
   </UiButtonBase>
 </template>
@@ -13,18 +37,23 @@ const props = defineProps<ButtonProps>();
 <style scoped lang="postcss">
 @layer components {
   .ui-button-ghost {
-    --button-color: inherit;
+    --button-ghost-bg-opacity: 0.05;
+    --button-ghost-hover-bg: hsl(
+      var(--color-primary-hsl) / var(--button-ghost-bg-opacity)
+    );
+    html.dark & {
+      --button-ghost-bg-opacity: 0.25;
+    }
 
     &:disabled {
       --button-color: var(--text-disabled);
+      --button-bg: transparent;
     }
 
     @media (hover: hover) and (pointer: fine) {
       &:hover:not(:disabled) {
-        --button-bg: hsl(var(--gray-10-hsl) / 0.05);
-        html.dark & {
-          --button-bg: hsl(var(--blue-7-hsl) / 0.25);
-        }
+        --button-bg: v-bind('styles.hoverBg');
+        --button-color: v-bind('styles.hoverColor');
       }
     }
   }

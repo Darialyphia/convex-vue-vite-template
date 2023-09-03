@@ -1,11 +1,31 @@
 <script setup lang="ts">
-import type { ButtonProps } from './UiButtonBase.vue';
+import type { ThemeProps } from '@/composables/useStyles';
+import type { ButtonBaseThemeKeys, ButtonProps } from './UiButtonBase.vue';
 
-const props = defineProps<ButtonProps>();
+type ButtonExtraKeys = 'bg' | 'color' | 'hoverColor' | 'hoverBg';
+
+const { theme, ...props } = defineProps<
+  ButtonProps & ThemeProps<ButtonBaseThemeKeys | ButtonExtraKeys>
+>();
+
+const defaultStyles = {
+  color: 'text-on-primary',
+  bg: 'primary',
+  hoverBg: 'primary-hover',
+  hoverColor: 'text-on-primary'
+};
+
+const styles = useStyles<ButtonExtraKeys>(
+  {
+    config: defaultStyles,
+    prefix: 'button'
+  },
+  () => theme
+);
 </script>
 
 <template>
-  <UiButtonBase v-bind="props" class="ui-button">
+  <UiButtonBase v-bind="props" :theme="{ ...defaultStyles, ...theme }" class="ui-button">
     <slot />
   </UiButtonBase>
 </template>
@@ -13,15 +33,10 @@ const props = defineProps<ButtonProps>();
 <style scoped lang="postcss">
 @layer components {
   .ui-button {
-    --button-color: var(--text-on-primary);
-    --button-bg: var(--primary);
-    --button-hover-color: var(--text-on-primary);
-    --button-hover-bg: var(--primary-hover);
-
     @media (hover: hover) and (pointer: fine) {
       &:hover:not(:disabled) {
-        --button-bg: var(--button-hover-bg);
-        --button-color: var(--button-hover-color);
+        --button-bg: v-bind('styles.hoverBg');
+        --button-color: v-bind('styles.hoverColor');
       }
     }
   }

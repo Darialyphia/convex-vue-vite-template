@@ -16,9 +16,11 @@ const MenuContent = createReusableTemplate();
 const isMenuOpened = ref(false);
 </script>
 <template>
-  <header class="container lt-lg:p-inline-2">
+  <header class="container lt-lg:p-inline-3">
     <MenuContent.define>
-      <UiButton v-if="!isAuthenticated" @click="loginWithRedirect()">Log in</UiButton>
+      <UiGhostButton v-if="!isAuthenticated" @click="loginWithRedirect()">
+        Log in
+      </UiGhostButton>
       <template v-else>
         <span class="ml-auto">
           <RouterLink

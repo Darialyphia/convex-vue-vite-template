@@ -81,6 +81,8 @@ html.dark {
 
   --link: hsl(var(--color-link-hsl));
 
+  --transparent: transparent;
+
   /* Additional values not present in Open props */
   --outline-offset: 3px;
   --radius-pill: 9999px;

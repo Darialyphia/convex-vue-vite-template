@@ -3,10 +3,17 @@ const { id, direction = 'left' } = defineProps<{
   id: string;
   direction?: 'left' | 'right';
 }>();
+
+const isOpened = defineModel('isOpened', { required: true });
 </script>
 
 <template>
-  <ArkDialog :id="id" v-slot="{ isOpen, open, close, triggerProps }" modal>
+  <ArkDialog
+    :id="id"
+    v-slot="{ isOpen, open, close, triggerProps }"
+    v-model:open="isOpened"
+    modal
+  >
     <slot name="trigger" v-bind="triggerProps" />
 
     <Teleport to="body">
