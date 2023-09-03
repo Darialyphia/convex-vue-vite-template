@@ -11,7 +11,7 @@ const { icon, inline, theme } = defineProps<
 
 const styles = useStyles(
   {
-    prefix: 'icon',
+    prefix: 'ui-icon',
     config: {
       size: 'font-size-3'
     }

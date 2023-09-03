@@ -18,7 +18,7 @@ const styles = useStyles(
     prefix: 'error',
     config: {
       bg: 'transparent',
-      color: 'error'
+      color: 'ui-form-error'
     }
   },
   () => theme

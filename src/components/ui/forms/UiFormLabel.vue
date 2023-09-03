@@ -10,7 +10,7 @@ const styles = useStyles(
       size: '[inherit]',
       weight: 'font-weight-5'
     },
-    prefix: 'label'
+    prefix: 'ui-form-label'
   },
   () => props.theme
 );

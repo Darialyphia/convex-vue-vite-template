@@ -27,7 +27,7 @@ const buttonProps = computed(() => {
 <style scoped lang="postcss">
 @layer components {
   .ui-icon-button {
-    --icon-size: var(--button-size);
+    --ui-icon-size: var(--button-size);
 
     padding: var(--size-1);
     border-radius: var(--radius-round);

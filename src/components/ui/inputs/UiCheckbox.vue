@@ -21,7 +21,7 @@ const styles = useStyles(
       size: 'font-size-3',
       labelColor: '[inherit]'
     },
-    prefix: 'checkbox'
+    prefix: 'ui-checkbox'
   },
   () => theme
 );

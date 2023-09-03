@@ -33,7 +33,7 @@ const {
 
 const styles = useStyles(
   {
-    prefix: 'button',
+    prefix: 'ui-button-base',
     config: {
       bg: 'transparent',
       color: 'text-1',
@@ -97,8 +97,8 @@ const tag = computed(() => {
     border-radius: v-bind('styles.radius');
 
     &:disabled:not(.is-loading) {
-      --button-color: var(--text-on-disabled);
-      --button-bg: var(--disabled);
+      --ui-button-base-color: var(--text-on-disabled);
+      --ui-button-base-bg: var(--disabled);
     }
 
     .is-loading {

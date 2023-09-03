@@ -27,7 +27,7 @@ const completedVModel = computed({
     <UiIconButton
       icon="mdi:close"
       title="remove todo"
-      style="--button-color: var(--error)"
+      :theme="{ color: 'error' }"
       :disabled="isRemoving"
       @click="removeTodo({ id: todo._id })"
     />

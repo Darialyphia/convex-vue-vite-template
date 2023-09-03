@@ -12,7 +12,7 @@ const styles = useStyles(
       onColor: 'primary',
       size: 'size-4'
     },
-    prefix: 'switch'
+    prefix: 'ui-switch'
   },
   () => theme
 );

@@ -11,7 +11,7 @@ const styles = useStyles(
       size: 'font-size-5',
       weight: 'font-weight-5'
     },
-    prefix: 'header'
+    prefix: 'ui-drawer-header'
   },
   () => theme
 );

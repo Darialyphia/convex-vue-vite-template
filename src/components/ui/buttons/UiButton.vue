@@ -18,7 +18,7 @@ const defaultStyles = {
 const styles = useStyles<ButtonExtraKeys>(
   {
     config: defaultStyles,
-    prefix: 'button'
+    prefix: 'ui-button'
   },
   () => theme
 );
@@ -35,8 +35,8 @@ const styles = useStyles<ButtonExtraKeys>(
   .ui-button {
     @media (hover: hover) and (pointer: fine) {
       &:hover:not(:disabled) {
-        --button-bg: v-bind('styles.hoverBg');
-        --button-color: v-bind('styles.hoverColor');
+        --ui-button-base-bg: v-bind('styles.hoverBg');
+        --ui-button-base-color: v-bind('styles.hoverColor');
       }
     }
   }

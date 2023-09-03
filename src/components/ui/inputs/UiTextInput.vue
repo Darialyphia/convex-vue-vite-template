@@ -33,7 +33,7 @@ const styles = useStyles(
     config: {
       size: 'font-size-1'
     },
-    prefix: 'input'
+    prefix: 'ui-text-input'
   },
   () => theme
 );
