@@ -21,18 +21,14 @@ const vModel = computed({
 });
 </script>
 <template>
-  <ArkCheckbox :id="id" v-slot="{ inputProps }" v-model="vModel" class="ui-checkbox">
-    <input v-bind="inputProps" />
-    <ArkCheckboxControl>
+  <ArkCheckbox :id="id" v-model="vModel">
+    <ArkCheckboxControl as-child>
       <div
-        class="h-5 w-5"
-        :class="
-          modelValue
-            ? 'i-material-symbols:check-box-outline'
-            : 'i-material-symbols:check-box-outline-blank'
-        "
+        class="control"
+        :class="modelValue ? 'i-carbon:checkbox-checked-filled' : 'i-carbon:checkbox'"
       />
     </ArkCheckboxControl>
+
     <ArkCheckboxLabel>
       <slot :value="modelValue" />
     </ArkCheckboxLabel>
@@ -40,15 +36,35 @@ const vModel = computed({
 </template>
 
 <style scoped lang="postcss">
-.ui-checkbox {
-  display: flex;
-  gap: var(--size-1);
-  align-items: center;
-  &:has(input:focus-visible) [data-part='control'] {
-    outline-color: var(--link);
-    outline-style: solid;
-    outline-offset: 2px;
-    transition: outline-offset 145ms var(--ease-2);
+@layer components {
+  [data-scope='checkbox'] {
+    &[data-part='root'] {
+      --_checkbox-size: var(--checkbox-size, var(--font-size-3));
+      --_checkbox-color: var(--checkbox-color, inherit);
+      --_checkbox-label-color: var(--checkbox-label-color, inherit);
+
+      display: flex;
+      gap: var(--size-1);
+      align-items: center;
+
+      &:has(input:focus-visible) [data-part='control'] {
+        outline-color: var(--link);
+        outline-style: solid;
+        outline-offset: 2px;
+        transition: outline-offset 145ms var(--ease-2);
+      }
+    }
+
+    &[data-part='control'] {
+      font-size: var(--_checkbox-size);
+      color: var(
+        --_checkbox-color
+      ) !important; /* need overrides uno icon class in the utilities layer */
+    }
+
+    &[data-part='label'] {
+      color: var(--_checkbox-label-color);
+    }
   }
 }
 </style>

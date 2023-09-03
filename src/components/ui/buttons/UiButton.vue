@@ -11,16 +11,18 @@ const props = defineProps<ButtonProps>();
 </template>
 
 <style scoped lang="postcss">
-.ui-button {
-  --button-color: var(--text-on-primary);
-  --button-bg: var(--primary);
-  --button-hover-color: var(--text-on-primary);
-  --button-hover-bg: var(--primary-hover);
+@layer components {
+  .ui-button {
+    --button-color: var(--text-on-primary);
+    --button-bg: var(--primary);
+    --button-hover-color: var(--text-on-primary);
+    --button-hover-bg: var(--primary-hover);
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover:not(:disabled) {
-      --button-bg: var(--button-hover-bg);
-      --button-color: var(--button-hover-color);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover:not(:disabled) {
+        --button-bg: var(--button-hover-bg);
+        --button-color: var(--button-hover-color);
+      }
     }
   }
 }

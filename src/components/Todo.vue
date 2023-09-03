@@ -8,15 +8,22 @@ const { todo } = defineProps<{
 
 const { isLoading: isRemoving, mutate: removeTodo } = useMutation(api.todos.remove);
 const { mutate: setCompleted } = useMutation(api.todos.setCompleted);
+
+const completedVModel = computed({
+  get() {
+    return todo.completed;
+  },
+  set(value) {
+    setCompleted({ id: todo._id, completed: value });
+  }
+});
 </script>
 
 <template>
   <article>
-    <input
-      type="checkbox"
-      @change="setCompleted({ id: todo._id, completed: !todo.completed })"
-    />
-    {{ todo.text }}
+    <UiCheckbox :id="`${todo._id}-checkbox`" v-model="completedVModel">
+      {{ todo.text }}
+    </UiCheckbox>
     <UiIconButton
       icon="mdi:close"
       title="remove todo"

@@ -11,18 +11,20 @@ const props = defineProps<ButtonProps>();
 </template>
 
 <style scoped lang="postcss">
-.ui-button-ghost {
-  --button-color: inherit;
+@layer components {
+  .ui-button-ghost {
+    --button-color: inherit;
 
-  &:disabled {
-    --button-color: var(--text-disabled);
-  }
+    &:disabled {
+      --button-color: var(--text-disabled);
+    }
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover:not(:disabled) {
-      --button-bg: hsl(var(--gray-10-hsl) / 0.05);
-      html.dark & {
-        --button-bg: hsl(var(--blue-7-hsl) / 0.25);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover:not(:disabled) {
+        --button-bg: hsl(var(--gray-10-hsl) / 0.05);
+        html.dark & {
+          --button-bg: hsl(var(--blue-7-hsl) / 0.25);
+        }
       }
     }
   }

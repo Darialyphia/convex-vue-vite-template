@@ -8,6 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddTodoForm: typeof import('./src/components/AddTodoForm.vue')['default']
+    ArkCheckbox: typeof import('@ark-ui/vue')['Checkbox']
+    ArkCheckboxControl: typeof import('@ark-ui/vue')['CheckboxControl']
+    ArkCheckboxLabel: typeof import('@ark-ui/vue')['CheckboxLabel']
     ArkDialog: typeof import('@ark-ui/vue')['Dialog']
     ArkDialogBackdrop: typeof import('@ark-ui/vue')['DialogBackdrop']
     ArkDialogCloseTrigger: typeof import('@ark-ui/vue')['DialogCloseTrigger']
@@ -29,6 +32,9 @@ declare module 'vue' {
     UiButton: typeof import('./src/components/ui/buttons/UiButton.vue')['default']
     UiButtonBase: typeof import('./src/components/ui/buttons/UiButtonBase.vue')['default']
     UiCheckbox: typeof import('./src/components/ui/inputs/UiCheckbox.vue')['default']
+    UiDrawer: typeof import('./src/components/ui/drawer/UiDrawer.vue')['default']
+    UiDrawerContent: typeof import('./src/components/ui/drawer/UiDrawerContent.vue')['default']
+    UiDrawerHeader: typeof import('./src/components/ui/drawer/UiDrawerHeader.vue')['default']
     UiFormControl: typeof import('./src/components/ui/forms/UiFormControl.vue')['default']
     UiFormError: typeof import('./src/components/ui/forms/UiFormError.vue')['default']
     UiFormLabel: typeof import('./src/components/ui/forms/UiFormLabel.vue')['default']
@@ -39,6 +45,7 @@ declare module 'vue' {
     UiModal: typeof import('./src/components/ui/modal/UiModal.vue')['default']
     UiModalContent: typeof import('./src/components/ui/modal/UiModalContent.vue')['default']
     UiModalHeader: typeof import('./src/components/ui/modal/UiModalHeader.vue')['default']
+    UiSimpleDrawer: typeof import('./src/components/ui/drawer/UiSimpleDrawer.vue')['default']
     UiSimpleModal: typeof import('./src/components/ui/modal/UiSimpleModal.vue')['default']
     UiSpinner: typeof import('./src/components/ui/UiSpinner.vue')['default']
     UiSwitch: typeof import('./src/components/ui/inputs/UiSwitch.vue')['default']

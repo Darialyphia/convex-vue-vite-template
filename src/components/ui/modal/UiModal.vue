@@ -38,64 +38,66 @@ const isOpened = defineModel('isOpened', { required: true });
 </template>
 
 <style scoped lang="postcss">
-[data-scope='dialog'] {
-  &:is([data-part='backdrop'], [data-part='container']) {
-    position: fixed;
-    z-index: 2;
-    inset: 0;
+@layer components {
+  [data-scope='dialog'] {
+    &:is([data-part='backdrop'], [data-part='container']) {
+      position: fixed;
+      z-index: 2;
+      inset: 0;
+    }
+
+    &[data-part='backdrop'] {
+      background-color: hsl(var(--gray-11-hsl) / 50%);
+    }
+
+    &[data-part='container'] {
+      overflow-y: auto;
+
+      width: var(--size-md);
+      max-width: 100%;
+      max-height: 80%;
+      margin: auto;
+    }
   }
 
-  &[data-part='backdrop'] {
-    background-color: hsl(var(--gray-11-hsl) / 50%);
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
   }
 
-  &[data-part='container'] {
-    overflow-y: auto;
-
-    width: var(--size-md);
-    max-width: 100%;
-    max-height: 80%;
-    margin: auto;
+  .v-leave-active > [data-part='backdrop'],
+  .v-enter-active > [data-part='container'] {
+    transition-delay: 0.2s;
   }
-}
 
-.wrapper {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.v-leave-active > [data-part='backdrop'],
-.v-enter-active > [data-part='container'] {
-  transition-delay: 0.2s;
-}
-
-.v-leave-active,
-.v-enter-active {
-  & > [data-part='backdrop'] {
-    transition-timing-function: ease;
-    transition-duration: 0.3s;
-    transition-property: opacity;
+  .v-leave-active,
+  .v-enter-active {
+    & > [data-part='backdrop'] {
+      transition-timing-function: ease;
+      transition-duration: 0.3s;
+      transition-property: opacity;
+    }
+    & > [data-part='container'] {
+      transition-timing-function: ease;
+      transition-duration: 0.3s;
+      transition-property: all;
+    }
   }
-  & > [data-part='container'] {
-    transition-timing-function: ease;
-    transition-duration: 0.3s;
-    transition-property: all;
-  }
-}
 
-.v-enter-from,
-.v-leave-to {
-  & > [data-part='backdrop'] {
-    opacity: 0;
+  .v-enter-from,
+  .v-leave-to {
+    & > [data-part='backdrop'] {
+      opacity: 0;
+    }
+    & > [data-part='container'] {
+      transform: translateY(calc(-1 * var(--size-8)));
+      opacity: 0;
+    }
   }
-  & > [data-part='container'] {
-    transform: translateY(calc(-1 * var(--size-8)));
-    opacity: 0;
-  }
-}
 
-:global(.ui-modal-not-closable [data-part='close-trigger']) {
-  display: none;
+  :global(.ui-modal-not-closable [data-part='close-trigger']) {
+    display: none;
+  }
 }
 </style>

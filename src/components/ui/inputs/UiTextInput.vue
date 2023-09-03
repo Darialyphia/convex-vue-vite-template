@@ -12,7 +12,6 @@ type Props = {
   name?: string;
   type?: string;
   id: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
   leftIcon?: string;
   rightIcon?: string;
   isError?: boolean;
@@ -25,7 +24,6 @@ const {
   leftIcon,
   rightIcon,
   name,
-  size = 'md',
   debouncedTimeout = 0
 } = defineProps<Props>();
 
@@ -61,7 +59,7 @@ watchEffect(() => {
 <template>
   <div
     class="ui-input-text"
-    :class="[size, isError && !attrs.disabled && 'error']"
+    :class="[isError && !attrs.disabled && 'error']"
     v-bind="wrapperAttrs"
   >
     <div v-if="slots.left || leftIcon" class="left">
@@ -88,105 +86,98 @@ watchEffect(() => {
 </template>
 
 <style scoped lang="postcss">
-.ui-input-text {
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: var(--size-1);
-  align-items: center;
+@layer components {
+  .ui-input-text {
+    --_input-size: var(--input-size, var(--font-size-3));
 
-  background-color: var(--surface-2);
-  border: solid 1px var(--border-dimmed);
-  border-radius: var(--radius-1);
-
-  &:has(input:focus-visible) {
-    outline-color: var(--link);
-    outline-style: solid;
-    outline-offset: var(--outline-offset);
-    transition: outline-offset 145ms var(--ease-2);
-  }
-
-  &.error {
-    border-color: var(--error);
-  }
-
-  &.sm {
-    font-size: var(--font-size-0);
-  }
-  &.md {
-    font-size: var(--font-size-1);
-  }
-  &.lg {
-    font-size: var(--font-size-2);
-  }
-  &.xl {
-    font-size: var(--font-size-3);
-  }
-
-  & .left,
-  & .right {
+    overflow: hidden;
     display: grid;
-    place-content: center;
-    height: auto;
-  }
-  & .left {
-    margin-inline-start: var(--size-2);
-  }
+    grid-template-columns: auto 1fr auto;
+    gap: var(--size-1);
+    align-items: center;
 
-  & .right {
-    margin-inline-end: var(--size-2);
-  }
+    font-size: var(--_input-size);
 
-  & .icon {
-    font-size: var(--font-size-3);
-    color: hsl(var(--primary-hsl) / 0.5);
-  }
+    background-color: var(--surface-2);
+    border: solid 1px var(--border-dimmed);
+    border-radius: var(--radius-1);
 
-  & input {
-    cursor: text;
-
-    min-width: 0;
-    padding-block: var(--size-2);
-    padding-inline: var(--size-3);
-
-    color: inherit;
-
-    background-color: inherit;
-
-    &::placeholder {
-      color: var(--text-3);
+    &:has(input:focus-visible) {
+      outline-color: var(--link);
+      outline-style: solid;
+      outline-offset: var(--outline-offset);
+      transition: outline-offset 145ms var(--ease-2);
     }
 
-    &:disabled {
-      cursor: not-allowed;
+    &.error {
+      border-color: var(--error);
     }
 
-    &:focus-visible {
-      outline: none;
+    & .left,
+    & .right {
+      display: grid;
+      place-content: center;
+      height: auto;
     }
-  }
+    & .left {
+      margin-inline-start: var(--size-2);
+    }
 
-  &:has(input:disabled) {
-    color: var(--text-disabled);
-    background: var(--disabled);
-  }
+    & .right {
+      margin-inline-end: var(--size-2);
+    }
 
-  &:has(.left) input {
-    padding-inline-start: 0;
-  }
+    & .icon {
+      font-size: var(--font-size-3);
+      color: hsl(var(--primary-hsl) / 0.5);
+    }
 
-  &:has(.right) input {
-    padding-inline-end: 0;
-  }
+    & input {
+      cursor: text;
 
-  &:not(:has(.left)):not(:has(.right)) {
-    grid-template-columns: 1fr;
-  }
-  &:has(.left):not(:has(.right)) {
-    grid-template-columns: auto 1fr;
-  }
-  &:has(.right):not(:has(.left)) {
-    grid-template-columns: 1fr auto;
+      min-width: 0;
+      padding-block: var(--size-2);
+      padding-inline: var(--size-3);
+
+      color: inherit;
+
+      background-color: inherit;
+
+      &::placeholder {
+        color: var(--text-3);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    &:has(input:disabled) {
+      color: var(--text-disabled);
+      background: var(--disabled);
+    }
+
+    &:has(.left) input {
+      padding-inline-start: 0;
+    }
+
+    &:has(.right) input {
+      padding-inline-end: 0;
+    }
+
+    &:not(:has(.left)):not(:has(.right)) {
+      grid-template-columns: 1fr;
+    }
+    &:has(.left):not(:has(.right)) {
+      grid-template-columns: auto 1fr;
+    }
+    &:has(.right):not(:has(.left)) {
+      grid-template-columns: 1fr auto;
+    }
   }
 }
 </style>

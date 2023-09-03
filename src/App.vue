@@ -11,31 +11,50 @@ until(isLoading)
   .then(() => {
     isReady.value = true;
   });
+
+const MenuContent = createReusableTemplate();
+const isMenuOpened = ref(false);
 </script>
 <template>
-  <header class="container">
+  <header class="container lt-lg:p-inline-2">
+    <MenuContent.define>
+      <UiButton v-if="!isAuthenticated" @click="loginWithRedirect()">Log in</UiButton>
+      <template v-else>
+        <span class="ml-auto">
+          <RouterLink
+            v-slot="{ navigate, href }"
+            :to="{ name: 'Profile', params: { id: user!.sub! } }"
+            custom
+          >
+            <UiLinkButton :href="href" @click="navigate">
+              {{ user?.nickname }}
+            </UiLinkButton>
+          </RouterLink>
+        </span>
+        <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
+          Log out
+        </UiButton>
+      </template>
+      <DarkModeToggle />
+    </MenuContent.define>
     <h1><RouterLink :to="{ name: 'Home' }">Super Duper Todo-list</RouterLink></h1>
-    <UiButton v-if="!isAuthenticated" class="ml-auto" @click="loginWithRedirect()">
-      Log in
-    </UiButton>
-    <template v-else>
-      <span class="ml-auto">
-        <RouterLink
-          v-slot="{ navigate, href }"
-          :to="{ name: 'Profile', params: { id: user!.sub! } }"
-          custom
-        >
-          <UiLinkButton :href="href" @click="navigate">
-            {{ user?.nickname }}
-          </UiLinkButton>
-        </RouterLink>
-      </span>
-      <UiButton @click="logout({ logoutParams: { returnTo: location.origin } })">
-        Log out
-      </UiButton>
-    </template>
 
-    <DarkModeToggle />
+    <nav>
+      <MenuContent.reuse />
+    </nav>
+
+    <UiSimpleDrawer id="header-menu" v-model:is-opened="isMenuOpened" title="Menu">
+      <template #trigger="triggerProps">
+        <UiIconButton
+          class="md:hidden ml-auto"
+          v-bind="triggerProps"
+          title="open menu"
+          icon="octicon:three-bars"
+          style="--button-size: var(--font-size-5)"
+        />
+      </template>
+      <MenuContent.reuse />
+    </UiSimpleDrawer>
   </header>
 
   <main v-if="!isReady" class="center surface">
@@ -68,6 +87,15 @@ header {
   padding-block: var(--size-3);
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+
+  @screen lt-md {
+    display: none;
+  }
+}
 h1 {
   font-size: var(--font-size-4);
 }

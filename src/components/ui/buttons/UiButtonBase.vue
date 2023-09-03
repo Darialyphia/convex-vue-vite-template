@@ -58,58 +58,62 @@ const tag = computed(() => {
 </template>
 
 <style scoped lang="postcss">
-:where(.ui-button-base) {
-  --button-radius: var(--radius-2);
-  --button-size: var(--font-size-2);
-  --button-weight: var(--font-weight-6);
-  --button-bg: transparent;
-  --button-color: var(--text-1);
-  --button-border-color: var(--button-bg);
+@layer components {
+  .ui-button-base {
+    --_button-radius: var(--button-radius, var(--radius-2));
+    --_button-size: var(--button-size, var(--font-size-2));
+    --_button-weight: var(--button-weight, var(--font-weight-6));
+    --_button-bg: var(--button-bg, transparent);
+    --_button-color: var(--button-color, var(--text-1));
+    --_button-border-color: var(--button-border-color, var(--_button-bg));
 
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    gap: var(--size-2);
+    align-items: center;
+    justify-content: center;
 
-  padding: var(--size-2-em) var(--size-3-em);
+    padding: var(--size-2-em) var(--size-3-em);
 
-  font-size: var(--button-size);
-  font-weight: var(--button-weight);
-  color: var(--button-color);
-  white-space: nowrap;
-  vertical-align: middle;
+    font-size: var(--_button-size);
+    font-weight: var(--_button-weight);
+    color: var(--_button-color);
+    white-space: nowrap;
+    vertical-align: middle;
 
-  background-color: var(--button-bg);
-  border: solid var(--border-size-1) var(--button-border-color);
-  border-radius: var(--button-radius);
+    background-color: var(--_button-bg);
+    border-color: var(--_button-border-color);
+    border-style: solid;
+    border-width: var(--border-size-1);
+    border-radius: var(--_button-radius);
 
-  &:disabled:not(.is-loading) {
-    --button-color: var(--text-on-disabled);
-    --button-bg: var(--disabled);
-  }
+    &:disabled:not(.is-loading) {
+      --button-color: var(--text-on-disabled);
+      --button-bg: var(--disabled);
+    }
 
-  .is-loading {
-    opacity: 0.8;
-  }
+    .is-loading {
+      opacity: 0.8;
+    }
 
-  &,
-  &:hover {
-    text-decoration: none;
-  }
+    &,
+    &:hover {
+      text-decoration: none;
+    }
 
-  &.is-inline {
-    display: inline-flex;
-  }
+    &.is-inline {
+      display: inline-flex;
+    }
 
-  &.is-cta {
-    width: 100%;
-  }
+    &.is-cta {
+      width: 100%;
+    }
 
-  & > .icon {
-    display: block;
-    flex-shrink: 0;
-    aspect-ratio: 1;
-    font-size: var(--font-size-4);
+    & > .icon {
+      display: block;
+      flex-shrink: 0;
+      aspect-ratio: 1;
+      font-size: var(--font-size-4);
+    }
   }
 }
 </style>

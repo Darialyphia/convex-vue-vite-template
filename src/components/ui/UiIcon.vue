@@ -22,26 +22,16 @@ const {
 </template>
 
 <style scoped lang="postcss">
-.ui-icon--inline {
-  display: inline;
-}
+@layer components {
+  .ui-icon--inline {
+    display: inline;
+  }
 
-.ui-icon {
-  flex-shrink: 0;
-  &:where(.sm) {
-    font-size: var(--font-size-1);
-  }
-  &:where(.md) {
-    font-size: var(--font-size-3);
-  }
-  &:where(.lg) {
-    font-size: var(--font-size-4);
-  }
-  &:where(.xl) {
-    font-size: var(--font-size-6);
-  }
-  &:where(.xxl) {
-    font-size: var(--font-size-7);
+  .ui-icon {
+    --_icon-size: var(--icon-size, var(--font-size-3));
+
+    flex-shrink: 0;
+    font-size: var(--_icon-size);
   }
 }
 </style>

@@ -21,7 +21,7 @@ const onSubmit = handleSubmit(async values => {
 
 const { isAuthenticated } = useConvexAuth();
 
-const focus = useFocus();
+const focus = useFocusOn();
 onMounted(() => {
   focus('foo');
 });
@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <form @submit.prevent="onSubmit">
-    <UiFormControl v-slot="{ error, inputProps }" name="text" class="w-sm space-y-2">
+    <UiFormControl v-slot="{ error, inputProps }" name="text" class="max-w-sm space-y-2">
       <UiFormLabel for="text">What needs to be done ?</UiFormLabel>
       <UiTextInput v-bind="inputProps" id="text" v-focus-on="'foo'" />
       <UiFormError :error="error" :is-always-visible="false" />

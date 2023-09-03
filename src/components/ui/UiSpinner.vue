@@ -14,7 +14,7 @@ const { size = 'md', delay = 0 } = defineProps<{
 </template>
 
 <style scoped lang="postcss">
-@keyframes spinner {
+@keyframes ui-spinner {
   from {
     transform: rotateZ(0);
   }
@@ -23,7 +23,7 @@ const { size = 'md', delay = 0 } = defineProps<{
   }
 }
 
-@keyframes delay {
+@keyframes ui-spinner-delay {
   from {
     visibility: hidden;
   }
@@ -34,25 +34,28 @@ const { size = 'md', delay = 0 } = defineProps<{
     visibility: visible;
   }
 }
-.ui-spinner {
-  animation:
-    spinner 2s ease infinite,
-    delay calc(1ms * v-bind(delay));
 
-  &.sm {
-    font-size: var(--font-size-1);
-  }
+@layer components {
+  .ui-spinner {
+    animation:
+      ui-spinner 2s ease infinite,
+      ui-spinner-delay calc(1ms * v-bind(delay));
 
-  &.md {
-    font-size: var(--font-size-5);
-  }
+    &.sm {
+      font-size: var(--font-size-1);
+    }
 
-  &.lg {
-    font-size: var(--font-size-8);
-  }
+    &.md {
+      font-size: var(--font-size-5);
+    }
 
-  &.xl {
-    font-size: var(--font-size-11);
+    &.lg {
+      font-size: var(--font-size-8);
+    }
+
+    &.xl {
+      font-size: var(--font-size-11);
+    }
   }
 }
 </style>

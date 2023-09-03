@@ -12,16 +12,19 @@ const props = defineProps<ButtonProps>();
 
 <style scoped lang="postcss">
 @import 'open-props/media';
-.ui-link-button {
-  --button-color: inherit;
 
-  &:disabled {
-    --button-color: var(--text-disabled);
-  }
+@layer components {
+  .ui-link-button {
+    --button-color: inherit;
 
-  @media (--mouse) {
-    &:hover:not(:disabled) {
-      text-decoration: underline;
+    &:disabled {
+      --button-color: var(--text-disabled);
+    }
+
+    @media (--mouse) {
+      &:hover:not(:disabled) {
+        text-decoration: underline;
+      }
     }
   }
 }

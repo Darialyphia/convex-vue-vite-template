@@ -28,9 +28,13 @@ const buttonProps = computed(() => {
 </template>
 
 <style scoped lang="postcss">
-.ui-icon-button {
-  padding: var(--size-1);
-  border-radius: var(--radius-round);
+@layer components {
+  .ui-icon-button {
+    --icon-size: var(--button-size);
+
+    padding: var(--size-1);
+    border-radius: var(--radius-round);
+  }
 }
 </style>
 s

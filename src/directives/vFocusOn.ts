@@ -1,4 +1,4 @@
-import { focusEmitter } from '@/composables/useFocus';
+import { focusEmitter } from '@/composables/useFocusOn';
 import type { Directive } from 'vue';
 
 export const vFocusOn: Directive = {

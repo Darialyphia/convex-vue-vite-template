@@ -1,9 +1,11 @@
 <template>
   <ArkDialogTitle as-child>
     <header>
-      <h2><slot /></h2>
+      <h2>
+        <slot />
+      </h2>
       <ArkDialogCloseTrigger>
-        <UiIconButton icon="material-symbols:close" title="close" class="self-center" />
+        <UiIconButton icon="material-symbols:close" title="close" />
       </ArkDialogCloseTrigger>
     </header>
   </ArkDialogTitle>
