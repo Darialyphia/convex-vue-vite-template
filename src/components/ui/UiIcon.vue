@@ -26,6 +26,7 @@ const styles = useStyles(
     class="ui-icon"
     :class="{ 'ui-icon--inline': inline }"
     :inline="inline"
+    :style="styles"
   />
 </template>
 
@@ -37,7 +38,7 @@ const styles = useStyles(
 
   .ui-icon {
     flex-shrink: 0;
-    font-size: v-bind('styles.size');
+    font-size: var(--ui-icon-size);
   }
 }
 </style>

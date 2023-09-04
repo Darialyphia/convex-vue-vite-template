@@ -17,7 +17,7 @@ const styles = useStyles(
 </script>
 
 <template>
-  <label :for="props.for">
+  <label :for="props.for" :style="styles">
     <slot />
   </label>
 </template>
@@ -25,9 +25,9 @@ const styles = useStyles(
 <style scoped>
 @layer components {
   label {
-    font-size: v-bind('styles.size');
-    font-weight: v-bind('styles.weight');
-    color: v-bind('styles.color');
+    font-size: var(--ui-form-label-size);
+    font-weight: var(--ui-form-label-weight);
+    color: var(--ui-form-label-color);
   }
 }
 </style>

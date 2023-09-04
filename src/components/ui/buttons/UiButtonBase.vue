@@ -40,7 +40,9 @@ const styles = useStyles(
       radius: 'radius-2',
       size: 'font-size-1',
       weight: 'font-weight-6',
-      borderColor: 'transparent'
+      borderColor: 'transparent',
+      disabledBg: 'disabled',
+      disabledColor: 'text-on-disabled'
     }
   },
   () => theme
@@ -65,6 +67,7 @@ const tag = computed(() => {
       'is-cta': isCta,
       'is-loading': isLoading
     }"
+    :style="styles"
     :disabled="attrs.disabled || isLoading"
   >
     <UiIcon v-if="leftIcon && !isLoading" :icon="leftIcon" aria-hidden="true" />
@@ -86,19 +89,19 @@ const tag = computed(() => {
 
     padding: var(--size-2-em) var(--size-3-em);
 
-    font-size: v-bind('styles.size');
-    font-weight: v-bind('styles.weight');
-    color: v-bind('styles.color');
+    font-size: var(--ui-button-base-size);
+    font-weight: var(--ui-button-base-weight);
+    color: var(--ui-button-base-color);
     white-space: nowrap;
     vertical-align: middle;
 
-    background-color: v-bind('styles.bg');
-    border: solid var(--border-size-1) v-bind('styles.borderColor');
-    border-radius: v-bind('styles.radius');
+    background-color: var(--ui-button-base-bg);
+    border: solid var(--border-size-1) var(--ui-button-borderColor);
+    border-radius: var(--ui-button-base-radius);
 
     &:disabled:not(.is-loading) {
-      --ui-button-base-color: var(--text-on-disabled);
-      --ui-button-base-bg: var(--disabled);
+      color: var(--ui-button-base-disabled-color);
+      background-color: var(--ui-button-base-disabled-bg);
     }
 
     .is-loading {

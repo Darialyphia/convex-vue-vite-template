@@ -24,7 +24,7 @@ const toggle = () => {
 </script>
 
 <template>
-  <div :class="['ui-input-switch', modelValue && 'is-on']">
+  <div :class="['ui-input-switch', modelValue && 'is-on']" :styles="styles">
     <slot name="off" />
     <button @click="toggle" />
     <slot name="on" />
@@ -34,10 +34,7 @@ const toggle = () => {
 <style scoped lang="postcss">
 @layer components {
   .ui-input-switch {
-    --_off-color: v-bind('styles.offColor');
-    --_on-color: v-bind('styles.onColor');
-    --_size: v-bind('styles.size');
-    --_color: var(--_off-color);
+    --_color: var(--ui-switch-off-color);
     --_position: 0;
 
     display: flex;
@@ -53,8 +50,8 @@ const toggle = () => {
     & button {
       position: relative;
 
-      width: calc(var(--_size) * 2);
-      height: var(--_size);
+      width: calc(var(--ui-switch-size) * 2);
+      height: var(--ui-switch-size);
       padding-inline: var(--size-1);
 
       background: var(--surface-1);
@@ -69,7 +66,7 @@ const toggle = () => {
         left: var(--_position);
 
         aspect-ratio: 1;
-        height: var(--_size);
+        height: var(--ui-switch-size);
 
         background-color: var(--_color);
         border-radius: var(--radius-pill);
@@ -81,7 +78,7 @@ const toggle = () => {
     }
 
     &.is-on button {
-      --_color: var(--_on-color);
+      --_color: var(--ui-switch-on-color);
       --_position: calc(100% - var(--_size));
     }
   }
