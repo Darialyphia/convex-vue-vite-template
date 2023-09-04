@@ -38,10 +38,11 @@ const vModel = computed({
 <template>
   <ArkCheckbox :id="id" v-model="vModel" :style="styles">
     <ArkCheckboxControl as-child>
-      <div
-        class="control"
-        :class="modelValue ? 'i-carbon:checkbox-checked-filled' : 'i-carbon:checkbox'"
-      />
+      <div>
+        <div
+          :class="modelValue ? 'i-carbon:checkbox-checked-filled' : 'i-carbon:checkbox'"
+        />
+      </div>
     </ArkCheckboxControl>
 
     <ArkCheckboxLabel>

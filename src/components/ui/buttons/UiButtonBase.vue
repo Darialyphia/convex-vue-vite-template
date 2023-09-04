@@ -113,6 +113,11 @@ const tag = computed(() => {
       text-decoration: none;
     }
 
+    &:active {
+      transform: scale(0.98);
+      transition: transform 0.2s;
+    }
+
     &.is-inline {
       display: inline-flex;
     }
