@@ -18,24 +18,22 @@ const isMenuOpened = ref(false);
 <template>
   <header class="container lt-lg:p-inline-3">
     <MenuContent.define>
-      <UiGhostButton v-if="!isAuthenticated" @click="loginWithRedirect()">
+      <UiLinkButton v-if="!isAuthenticated" @click="loginWithRedirect()">
         Log in
-      </UiGhostButton>
+      </UiLinkButton>
       <template v-else>
-        <span class="ml-auto">
-          <RouterLink
-            v-slot="{ navigate, href }"
-            :to="{ name: 'Profile', params: { id: user!.sub! } }"
-            custom
-          >
-            <UiLinkButton :href="href" @click="navigate">
-              {{ user?.nickname }}
-            </UiLinkButton>
-          </RouterLink>
-        </span>
-        <UiGhostButton @click="logout({ logoutParams: { returnTo: location.origin } })">
+        <RouterLink
+          v-slot="{ navigate, href }"
+          :to="{ name: 'Profile', params: { id: user!.sub! } }"
+          custom
+        >
+          <UiLinkButton :href="href" @click="navigate">
+            {{ user?.nickname }}
+          </UiLinkButton>
+        </RouterLink>
+        <UiLinkButton @click="logout({ logoutParams: { returnTo: location.origin } })">
           Log out
-        </UiGhostButton>
+        </UiLinkButton>
       </template>
       <DarkModeToggle />
     </MenuContent.define>
@@ -52,7 +50,7 @@ const isMenuOpened = ref(false);
           v-bind="triggerProps"
           title="open menu"
           icon="octicon:three-bars"
-          style="--button-size: var(--font-size-5)"
+          :theme="{ size: 'font-size-5' }"
         />
       </template>
       <MenuContent.reuse />

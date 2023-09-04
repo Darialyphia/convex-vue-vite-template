@@ -87,6 +87,7 @@ const tag = computed(() => {
     align-items: center;
     justify-content: center;
 
+    width: fit-content;
     padding: var(--size-2-em) var(--size-3-em);
 
     font-size: var(--ui-button-base-size);
