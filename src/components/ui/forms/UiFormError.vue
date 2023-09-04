@@ -15,10 +15,10 @@ const {
 
 const styles = useStyles(
   {
-    prefix: 'error',
+    prefix: 'ui-form-error',
     config: {
       bg: 'transparent',
-      color: 'ui-form-error'
+      color: 'error'
     }
   },
   () => theme
