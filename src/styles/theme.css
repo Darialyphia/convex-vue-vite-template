@@ -74,7 +74,7 @@ html.dark {
   --text-on-error: hsl(var(--color-text-on-error-hsl));
 
   --disabled: hsl(var(--color-disabled-hsl));
-  --text-on-disabled: hsl(var(--color-text-on-hsl));
+  --text-on-disabled: hsl(var(--color-text-on-disabled-hsl));
 
   --border-dimmed: hsl(var(--gray-11-hsl) / 0.15);
   --border: hsl(var(--gray-11-hsl) / 0.4);
