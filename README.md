@@ -68,7 +68,7 @@ like useQuery but can be awaited and will resolve once the query result is avail
     loadMore
   } = usePaginatedQuery(
     api.messages.paginatedList,
-    {},
+    {}, // like useQuery and usesuspenseQuery, you can provide a getter function or a reactive value as well
     { initialNumItems: ITEMS_PER_PAGE }
   );
 </script>
