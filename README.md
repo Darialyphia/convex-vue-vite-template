@@ -21,10 +21,21 @@ Everything should be setup to work properly.
 
 ```html
 <script setup lang="ts">
-  import { useQuery } from '@/composables/convex';
   import { api } from '@/api';
-
+  // queries with no arguments
   const messages = useQuery(api.messages.list);
+
+  // queries with static arguments
+  const user = useQuery(api.user.byId, [{ id: 1 }]);
+
+  // queries with dynamic arguments: you can use a ref, computed, or getter function
+  const args = ref(1);
+  const user = useQuery(api.user.byId, args);
+  const user = useQuery(
+    api.user.byId,
+    computed(() => [{ id: props.userId }])
+  );
+  const user = useQuery(api.user.byId, () => [{ id: props.userId }]);
 </script>
 
 <template>
@@ -40,10 +51,24 @@ like useQuery but can be awaited and will resolve once the query result is avail
 
 ```html
 <script setup lang="ts">
-  import { useSuspenseQuery } from '@/composables/convex';
   import { api } from '@/api';
 
   const messages = await useSuspenseQuery(api.messages.list);
+
+  // queries with no arguments
+  const messages = useSuspenseQuery(api.messages.list);
+
+  // queries with static arguments
+  const user = useSuspenseQuery(api.user.byId, [{ id: 1 }]);
+
+  // queries with dynamic arguments: you can use a ref, computed, or getter function
+  const args = ref(1);
+  const user = useSuspenseQuery(api.user.byId, args);
+  const user = useSuspenseQuery(
+    api.user.byId,
+    computed(() => [{ id: props.userId }])
+  );
+  const user = useSuspenseQuery(api.user.byId, () => [{ id: props.userId }]);
 </script>
 
 <template>
@@ -59,7 +84,6 @@ like useQuery but can be awaited and will resolve once the query result is avail
 ```html
 <script setup lang="ts">
   import { api } from '@/api';
-  import { usePaginatedQuery } from '@/composables/convex';
 
   const ITEMS_PER_PAGE = 5;
   const {
