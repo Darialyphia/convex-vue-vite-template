@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="TData, TArgs extends DefaultFunctionArgs">
 import { api } from '@/api';
-import { useSuspenseQuery } from '@/composables/convex/useSuspenseQuery';
 
 import type {
   DefaultFunctionArgs,
@@ -15,7 +14,7 @@ const { query, args } = defineProps<{
   args: OptionalRestArgs<QueryFunc>;
 }>();
 
-const data = await useSuspenseQuery(query(api), ...args);
+const data = await useSuspenseQuery(query(api), () => args);
 </script>
 
 <template>

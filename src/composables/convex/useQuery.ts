@@ -1,32 +1,38 @@
+import type { MaybeRefOrGetter } from '@vueuse/core';
 import {
   makeFunctionReference,
   type FunctionReference,
   type OptionalRestArgs
 } from 'convex/server';
-import { onUnmounted, ref, type Ref } from 'vue';
-import { useConvex } from './useConvex';
 
 export type QueryReference = FunctionReference<'query'>;
 
 export const useQuery = <Query extends QueryReference>(
   query: Query,
-  ...args: OptionalRestArgs<Query>
+  args: MaybeRefOrGetter<OptionalRestArgs<Query>>
 ): Ref<Query['_returnType'] | undefined> => {
   const convex = useConvex();
 
   const queryReference =
     typeof query === 'string' ? makeFunctionReference<'query', any, any>(query) : query;
 
-  const { onUpdate, localQueryResult } = convex.watchQuery(queryReference, ...args);
-  const data = ref(localQueryResult());
+  const data = ref<Query['_returnType'] | undefined>();
 
-  const unsub = onUpdate(() => {
-    const newVal = localQueryResult();
+  watchEffect(onCleanup => {
+    const { onUpdate, localQueryResult } = convex.watchQuery(
+      queryReference,
+      ...toValue(args)
+    );
+    data.value = localQueryResult();
 
-    data.value = newVal;
+    const unsub = onUpdate(() => {
+      const newVal = localQueryResult();
+
+      data.value = newVal;
+    });
+
+    onCleanup(unsub);
   });
-
-  onUnmounted(unsub);
 
   return data;
 };

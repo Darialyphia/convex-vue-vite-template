@@ -1,4 +1,4 @@
-import { ref, type ComputedRef, watchEffect, computed, watch } from 'vue';
+import { type ComputedRef } from 'vue';
 import type { BetterOmit, Expand } from '@/utils/types';
 import {
   type FunctionArgs,
@@ -11,6 +11,7 @@ import {
 } from 'convex/server';
 import { convexToJson, type Infer, type Value } from 'convex/values';
 import { useQueries } from './useQueries';
+import type { MaybeRefOrGetter } from '@vueuse/core';
 
 export type PaginatedQueryItem<Query extends PaginatedQueryReference> =
   FunctionReturnType<Query>['page'][number];
@@ -60,7 +61,7 @@ function nextPaginationId(): number {
 
 export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   query: Query,
-  args: PaginatedQueryArgs<Query>,
+  args: MaybeRefOrGetter<PaginatedQueryArgs<Query>>,
   options: { initialNumItems: number }
 ): UsePaginatedQueryReturnType<Query> {
   if (typeof options?.initialNumItems !== 'number' || options.initialNumItems < 0) {
@@ -73,7 +74,6 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     const id = nextPaginationId();
     return {
       query,
-      args: args as Record<string, Value>,
       id,
       maxQueryIndex: 0,
       queries: {
@@ -93,7 +93,6 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   };
   const state = ref<{
     query: FunctionReference<'query'>;
-    args: Record<string, Value>;
     id: number;
     maxQueryIndex: number;
     queries: Record<
@@ -108,6 +107,7 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   }>(createInitialState());
 
   const resultsObject = useQueries(computed(() => state.value.queries));
+
   const hasRecoverableError = computed(() => {
     let hasError = false;
     for (let i = 0; i <= state.value.maxQueryIndex; i++) {
@@ -147,15 +147,16 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     return hasError;
   });
 
+  const unwrappedArgs = computed(() => toValue(args));
   watch(
     [
       () => hasRecoverableError.value,
       () => getFunctionName(query) !== getFunctionName(state.value.query),
-      () =>
-        JSON.stringify(convexToJson(args as Value)) !==
-        JSON.stringify(convexToJson(state.value.args))
+      unwrappedArgs
     ],
-    ([hasRecoverableError, queryHasChanged, argsHaveChanged]) => {
+    ([hasRecoverableError, queryHasChanged, newArgs], [, , oldArgs]) => {
+      const argsHaveChanged = JSON.stringify(oldArgs) !== JSON.stringify(newArgs);
+
       if (hasRecoverableError || queryHasChanged || argsHaveChanged) {
         state.value = createInitialState();
       }
@@ -176,6 +177,17 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
       lastPage = resultsObject.value[i];
       if (lastPage === undefined) {
         break;
+      }
+      if (
+        lastPage instanceof Error &&
+        !lastPage.message.includes('InvalidCursor') &&
+        !lastPage.message.includes('ArrayTooLong') &&
+        !lastPage.message.includes('TooManyReads') &&
+        !lastPage.message.includes('TooManyDocumentsRead') &&
+        !lastPage.message.includes('ReadsTooLarge')
+      ) {
+        console.log('throwing');
+        throw lastPage;
       }
       allPages.push(...lastPage.page);
     }
@@ -231,7 +243,7 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     state.value.queries[state.value.maxQueryIndex] = {
       query: state.value.query,
       args: {
-        ...state.value.args,
+        ...unwrappedArgs.value,
         paginationOpts: {
           numItems,
           cursor: lastPage.continueCursor,
