@@ -16,7 +16,7 @@ const {
   status,
   isLoading,
   loadMore
-} = usePaginatedQuery(query(api), args, { initialNumItems: numItems });
+} = usePaginatedQuery(query(api), () => args, { initialNumItems: numItems });
 
 const canLoadMore = computed(() => status.value === 'CanLoadMore');
 const isLoadingMore = computed(() => status.value === 'LoadingMore');

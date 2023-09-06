@@ -14,7 +14,7 @@ const { query, args } = defineProps<{
   args: OptionalRestArgs<QueryFunc>;
 }>();
 
-const data = await useSuspenseQuery(query(api), ...args);
+const data = await useSuspenseQuery(query(api), () => args);
 </script>
 
 <template>
