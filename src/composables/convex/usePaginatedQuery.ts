@@ -11,6 +11,7 @@ import {
 } from 'convex/server';
 import { convexToJson, type Infer, type Value } from 'convex/values';
 import { useQueries } from './useQueries';
+import type { MaybeRefOrGetter } from '@vueuse/core';
 
 export type PaginatedQueryItem<Query extends PaginatedQueryReference> =
   FunctionReturnType<Query>['page'][number];
@@ -60,7 +61,7 @@ function nextPaginationId(): number {
 
 export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   query: Query,
-  args: PaginatedQueryArgs<Query>,
+  args: MaybeRefOrGetter<PaginatedQueryArgs<Query>>,
   options: { initialNumItems: number }
 ): UsePaginatedQueryReturnType<Query> {
   if (typeof options?.initialNumItems !== 'number' || options.initialNumItems < 0) {
@@ -73,7 +74,6 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     const id = nextPaginationId();
     return {
       query,
-      args: args as Record<string, Value>,
       id,
       maxQueryIndex: 0,
       queries: {
@@ -93,7 +93,6 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
   };
   const state = ref<{
     query: FunctionReference<'query'>;
-    args: Record<string, Value>;
     id: number;
     maxQueryIndex: number;
     queries: Record<
@@ -148,15 +147,16 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     return hasError;
   });
 
+  const unwrappedArgs = computed(() => toValue(args));
   watch(
     [
       () => hasRecoverableError.value,
       () => getFunctionName(query) !== getFunctionName(state.value.query),
-      () =>
-        JSON.stringify(convexToJson(args as Value)) !==
-        JSON.stringify(convexToJson(state.value.args))
+      unwrappedArgs
     ],
-    ([hasRecoverableError, queryHasChanged, argsHaveChanged]) => {
+    ([hasRecoverableError, queryHasChanged, newArgs], [, , oldArgs]) => {
+      const argsHaveChanged = JSON.stringify(oldArgs) !== JSON.stringify(newArgs);
+
       if (hasRecoverableError || queryHasChanged || argsHaveChanged) {
         state.value = createInitialState();
       }
@@ -243,7 +243,7 @@ export function usePaginatedQuery<Query extends PaginatedQueryReference>(
     state.value.queries[state.value.maxQueryIndex] = {
       query: state.value.query,
       args: {
-        ...state.value.args,
+        ...unwrappedArgs.value,
         paginationOpts: {
           numItems,
           cursor: lastPage.continueCursor,
