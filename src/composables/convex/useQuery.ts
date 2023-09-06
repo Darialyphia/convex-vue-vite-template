@@ -1,9 +1,11 @@
-import type { MaybeRefOrGetter } from '@vueuse/core';
+import { toValue, type MaybeRefOrGetter } from '@vueuse/core';
 import {
   makeFunctionReference,
   type FunctionReference,
   type OptionalRestArgs
 } from 'convex/server';
+import { useConvex } from './useConvex';
+import { type Ref, ref, watchEffect } from 'vue';
 
 export type QueryReference = FunctionReference<'query'>;
 

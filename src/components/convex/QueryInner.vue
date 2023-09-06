@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="TData, TArgs extends DefaultFunctionArgs">
 import { api } from '@/api';
+import { useSuspenseQuery } from '@/composables/convex';
 
 import type {
   DefaultFunctionArgs,

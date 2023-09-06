@@ -1,9 +1,11 @@
 <script setup lang="ts" generic="TFunc extends PaginatedQueryReference">
 import { api } from '@/api';
-import type {
-  PaginatedQueryArgs,
-  PaginatedQueryReference
+import {
+  usePaginatedQuery,
+  type PaginatedQueryArgs,
+  type PaginatedQueryReference
 } from '@/composables/convex/usePaginatedQuery';
+import { computed } from 'vue';
 
 const { query, args, numItems } = defineProps<{
   query: (_api: typeof api) => TFunc;
