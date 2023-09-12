@@ -21,7 +21,8 @@ export const useSuspenseQuery = <Query extends QueryReference>(
         queryReference,
         ...toValue(args)
       );
-      data.value = localQueryResult();
+      const initialValue = localQueryResult();
+      data.value = initialValue;
 
       const unsub = onUpdate(() => {
         try {
@@ -33,7 +34,7 @@ export const useSuspenseQuery = <Query extends QueryReference>(
         }
       });
 
-      if (data.value) res(data);
+      if (initialValue) res(data);
 
       onCleanup(unsub);
     });
