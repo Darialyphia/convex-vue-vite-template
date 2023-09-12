@@ -19,7 +19,7 @@ const styles = useStyles(
 
 <template>
   <ArkDialogTitle as-child>
-    <header>
+    <header :style="styles">
       <h2><slot /></h2>
       <ArkDialogCloseTrigger>
         <UiIconButton icon="material-symbols:close" title="close" class="self-center" />
@@ -39,11 +39,11 @@ const styles = useStyles(
 
     padding: var(--size-4) var(--size-5);
 
-    font-size: v-bind('styles.size');
-    font-weight: v-bind('styles.weight');
-    color: v-bind('styles.color');
+    font-size: var(--ui-drawer-header-size);
+    font-weight: var(--ui-drawer-header-weight);
+    color: var(--ui-drawer-header-color);
 
-    background-color: v-bind('styles.bg');
+    background-color: var(--ui-drawer-header-bg);
 
     > h2 {
       font-size: inherit;

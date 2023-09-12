@@ -36,12 +36,13 @@ const vModel = computed({
 });
 </script>
 <template>
-  <ArkCheckbox :id="id" v-model="vModel">
+  <ArkCheckbox :id="id" v-model="vModel" :style="styles">
     <ArkCheckboxControl as-child>
-      <div
-        class="control"
-        :class="modelValue ? 'i-carbon:checkbox-checked-filled' : 'i-carbon:checkbox'"
-      />
+      <div>
+        <div
+          :class="modelValue ? 'i-carbon:checkbox-checked-filled' : 'i-carbon:checkbox'"
+        />
+      </div>
     </ArkCheckboxControl>
 
     <ArkCheckboxLabel>
@@ -67,14 +68,14 @@ const vModel = computed({
     }
 
     &[data-part='control'] {
-      font-size: v-bind('styles.size');
-      color: v-bind(
-        'styles.color'
+      font-size: var(--ui-checkbox-size);
+      color: var(
+        --ui-checkbox-color
       ) !important; /* need overrides uno icon class in the utilities layer */
     }
 
     &[data-part='label'] {
-      color: v-bind('styles.labelColor');
+      color: var(--ui-checkbox-label-color);
     }
   }
 }

@@ -1,9 +1,10 @@
 import { makeFunctionReference, type OptionalRestArgs } from 'convex/server';
 import type { QueryReference } from './useQuery';
+import type { MaybeRefOrGetter } from '@vueuse/core';
 
 export const useSuspenseQuery = <Query extends QueryReference>(
   query: Query,
-  ...args: OptionalRestArgs<Query>
+  args: MaybeRefOrGetter<OptionalRestArgs<Query>>
 ): Promise<Ref<Query['_returnType']>> => {
   const convex = useConvex();
 

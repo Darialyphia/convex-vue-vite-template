@@ -68,6 +68,7 @@ watchEffect(() => {
     class="ui-input-text"
     :class="[isError && !attrs.disabled && 'error']"
     v-bind="wrapperAttrs"
+    :style="styles"
   >
     <div v-if="slots.left || leftIcon" class="left">
       <slot name="left">
@@ -101,7 +102,7 @@ watchEffect(() => {
     gap: var(--size-1);
     align-items: center;
 
-    font-size: v-bind('styles.size');
+    font-size: var(--ui-text-input-size);
 
     background-color: var(--surface-2);
     border: solid 1px var(--border-dimmed);
@@ -141,8 +142,8 @@ watchEffect(() => {
       cursor: text;
 
       min-width: 0;
-      padding-block: var(--size-2);
-      padding-inline: var(--size-3);
+      padding-block: var(--size-2-em);
+      padding-inline: var(--size-3-em);
 
       color: inherit;
 

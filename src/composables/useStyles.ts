@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue';
+import type { MaybeRefOrGetter, StyleValue } from 'vue';
 import type { AnyObject } from '@/utils/types';
 import { kebabCase } from 'lodash-es';
 
@@ -17,6 +17,8 @@ const transformValue = (val: string) => {
     : `var(--${val})`;
 };
 
+const appliedDefaults = new Set<string>();
+
 export const useStyles = <T extends string>(
   {
     config,
@@ -25,18 +27,30 @@ export const useStyles = <T extends string>(
     config: Required<Record<T, string>>;
     prefix?: string;
   },
-  getProps: MaybeRefOrGetter<WithThemeProps<AnyObject, T>['theme']>
-) =>
-  computed(() => {
-    const theme = toValue(getProps);
+  getTheme: MaybeRefOrGetter<WithThemeProps<AnyObject, T>['theme']>
+) => {
+  if (!appliedDefaults.has(prefix)) {
+    appliedDefaults.add(prefix);
+
+    Object.entries(config).map(([key, defaultValue]) => {
+      const fallback = transformValue(defaultValue as string);
+      const name = `--${prefix}${prefix ? '-' : ''}${kebabCase(key)}`;
+      document.documentElement.style.setProperty(name, fallback);
+    });
+  }
+
+  return computed<StyleValue>(() => {
+    const theme = toValue(getTheme);
 
     return Object.fromEntries(
-      Object.entries(config).map(([key, defaultValue]) => {
-        const fallback = transformValue(theme?.[key as T] ?? (defaultValue as string));
-        return [
-          key,
-          `var(--${prefix}${prefix ? '-' : ''}${kebabCase(key)}, ${fallback})`
-        ];
-      })
+      Object.keys(config)
+        .map(key => {
+          const name = `--${prefix}${prefix ? '-' : ''}${kebabCase(key)}`;
+          const value = theme?.[key as T];
+
+          return [name, isString(value) ? transformValue(value) : undefined];
+        })
+        .filter(([, v]) => isDefined(v))
     ) as Record<T, string>;
   });
+};

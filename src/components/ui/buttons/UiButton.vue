@@ -8,24 +8,36 @@ const { theme, ...props } = defineProps<
   ButtonProps & ThemeProps<ButtonBaseThemeKeys | ButtonExtraKeys>
 >();
 
-const defaultStyles = {
-  color: 'text-on-primary',
-  bg: 'primary',
-  hoverBg: 'primary-hover',
-  hoverColor: 'text-on-primary'
-};
-
 const styles = useStyles<ButtonExtraKeys>(
   {
-    config: defaultStyles,
+    config: {
+      color: 'text-on-primary',
+      bg: 'primary',
+      hoverBg: 'primary-hover',
+      hoverColor: 'text-on-primary'
+    },
     prefix: 'ui-button'
   },
   () => theme
 );
+
+const passthroughTheme = computed(() => {
+  if (!theme) return theme;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { color, bg, hoverBg, hoverColor, ...rest } = theme;
+
+  return rest;
+});
 </script>
 
 <template>
-  <UiButtonBase v-bind="props" :theme="{ ...defaultStyles, ...theme }" class="ui-button">
+  <UiButtonBase
+    v-bind="props"
+    :theme="passthroughTheme"
+    class="ui-button"
+    :style="styles"
+  >
     <slot />
   </UiButtonBase>
 </template>
@@ -33,10 +45,13 @@ const styles = useStyles<ButtonExtraKeys>(
 <style scoped lang="postcss">
 @layer components {
   .ui-button {
+    --ui-button-base-bg: var(--ui-button-bg);
+    --ui-button-base-color: var(--ui-button-color);
+
     @media (hover: hover) and (pointer: fine) {
       &:hover:not(:disabled) {
-        --ui-button-base-bg: v-bind('styles.hoverBg');
-        --ui-button-base-color: v-bind('styles.hoverColor');
+        --ui-button-base-bg: var(--ui-button-hover-bg);
+        --ui-button-base-color: var(--ui-button-hover-color);
       }
     }
   }

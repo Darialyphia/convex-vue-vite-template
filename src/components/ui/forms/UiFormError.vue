@@ -15,10 +15,10 @@ const {
 
 const styles = useStyles(
   {
-    prefix: 'error',
+    prefix: 'ui-form-error',
     config: {
       bg: 'transparent',
-      color: 'ui-form-error'
+      color: 'error'
     }
   },
   () => theme
@@ -26,7 +26,7 @@ const styles = useStyles(
 </script>
 
 <template>
-  <div class="ui-form-error">
+  <div class="ui-form-error" :styles="styles">
     <transition appear>
       <div v-if="error" class="flex gap-1 items-start">
         <UiIcon icon="mdi-alert" />
@@ -41,8 +41,8 @@ const styles = useStyles(
   .ui-form-error {
     gap: var(--size-2);
     min-height: v-bind('isAlwaysVisible ? "var(--size-5" : 0');
-    color: v-bind('styles.color');
-    background-color: v-bind('styles.bg');
+    color: var(--ui-form-error-color);
+    background-color: var(--ui-form-error-bg);
   }
 
   .v-enter-active,

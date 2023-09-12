@@ -24,8 +24,20 @@ Everything should be setup to work properly.
 ```html
 <script setup lang="ts">
   import { api } from '@/api';
-
+  // queries with no arguments
   const messages = useQuery(api.messages.list);
+
+  // queries with static arguments
+  const user = useQuery(api.user.byId, [{ id: 1 }]);
+
+  // queries with dynamic arguments: you can use a ref, computed, or getter function
+  const args = ref(1);
+  const user = useQuery(api.user.byId, args);
+  const user = useQuery(
+    api.user.byId,
+    computed(() => [{ id: props.userId }])
+  );
+  const user = useQuery(api.user.byId, () => [{ id: props.userId }]);
 </script>
 
 <template>
@@ -44,6 +56,21 @@ like useQuery but can be awaited and will resolve once the query result is avail
   import { api } from '@/api';
 
   const messages = await useSuspenseQuery(api.messages.list);
+
+  // queries with no arguments
+  const messages = useSuspenseQuery(api.messages.list);
+
+  // queries with static arguments
+  const user = useSuspenseQuery(api.user.byId, [{ id: 1 }]);
+
+  // queries with dynamic arguments: you can use a ref, computed, or getter function
+  const args = ref(1);
+  const user = useSuspenseQuery(api.user.byId, args);
+  const user = useSuspenseQuery(
+    api.user.byId,
+    computed(() => [{ id: props.userId }])
+  );
+  const user = useSuspenseQuery(api.user.byId, () => [{ id: props.userId }]);
 </script>
 
 <template>
@@ -67,7 +94,7 @@ like useQuery but can be awaited and will resolve once the query result is avail
     loadMore
   } = usePaginatedQuery(
     api.messages.paginatedList,
-    {},
+    {}, // like useQuery and usesuspenseQuery, you can provide a getter function or a reactive value as well
     { initialNumItems: ITEMS_PER_PAGE }
   );
 </script>
